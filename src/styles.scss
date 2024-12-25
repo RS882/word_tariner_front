@@ -22,11 +22,11 @@ body{
     background:var(--dark-color);
     color: var(--ligth-color);
     background-image: url(/assets/images/backgruonds/bg-main.jpg);
-    background-size: cover;      
-    background-position: center; 
-    background-repeat: no-repeat; 
-    height: 100vh;               
-    margin: 0;   
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
 }
 
 button{
@@ -44,7 +44,7 @@ button{
     height: 24px;
    }
 
-.btn{  
+.btn{
     width: 100%;
     max-width: 500px;
     border: 1px solid var(--dark-color);
