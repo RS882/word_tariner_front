@@ -1,0 +1,30 @@
+.form-input-box {
+  position: relative;
+}
+
+.password-eye-btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #FFFFFFBF;
+  cursor: pointer;
+  height: 24px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+
+.border-red {
+  border-color:var(--red-color);
+}
+
+.border-green {
+  border-color: var(--green-color);
+}
+
+

@@ -1,0 +1,17 @@
+<div class="input-container">
+  <app-text-box
+    [labelText]="labelText"
+    [controlName]="controlName"
+    [formGroup]="form"
+    [hasError]="hasError"
+    [isValid]="isValid"/>
+
+  <app-error-messages
+    [labelText]="labelText"
+    [hasError]="hasError"
+    [validateResults]="{
+      'required': errors?.['required'],
+      'email': errors?.['email'],
+      'pattern': errors?.['pattern']
+    }"/>
+</div>

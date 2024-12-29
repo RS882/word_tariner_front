@@ -1,0 +1,27 @@
+<label class="form-label"
+       [ngClass]="controlName === 'password'?'mb32':'mb20'"
+       [formGroup]="formGroup">
+  {{ labelText }}
+  <div class="form-input-box">
+    <input
+      [formControlName]="controlName"
+      [type]="isPasswordVisible()? 'text' : 'password'"
+      class="form-input"
+      placeholder="Enter your {{ labelText | lowercase }}"
+      [ngClass]="{
+        'border-red': hasError,
+        'border-green': isValid
+      }"
+    >
+    @if (controlName === 'password') {
+      <button class="password-eye-btn" type="button"
+              (click)="isPasswordVisible.set(!isPasswordVisible())">
+        @if (isPasswordVisible()) {
+          <app-eye-slash-icon/>
+        } @else {
+          <app-eye-icon/>
+        }
+      </button>
+    }
+  </div>
+</label>

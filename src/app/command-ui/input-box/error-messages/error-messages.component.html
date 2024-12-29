@@ -1,0 +1,7 @@
+@if (hasError && validateResults){
+  <div class="error-messages">
+    @for (errorMessage of errorMessages; track errorMessage+123){
+      <small>{{ errorMessage }}</small>
+    }
+  </div>
+}
