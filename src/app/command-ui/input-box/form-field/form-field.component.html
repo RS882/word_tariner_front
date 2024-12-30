@@ -1,4 +1,4 @@
-<div class="input-container">
+<div class="input-container mb32">
   <app-text-box
     [labelText]="labelText"
     [controlName]="controlName"
@@ -7,12 +7,19 @@
     [isValid]="isValid"
   />
 
+  <span class="input-info_text">
+    {{ infoText }}
+  </span>
+
   <app-error-messages
     [labelText]="labelText"
     [hasError]="hasError"
     [validateResults]="{
       'required': errors?.['required'],
       'email': errors?.['email'],
-      'pattern': errors?.['pattern']
+      'pattern': errors?.['pattern'],
+      'minlength': errors?.['minlength'],
+      'maxlength': errors?.['maxlength'],
+      'passwordsMismatch': passwordsMismatchError
     }"/>
 </div>

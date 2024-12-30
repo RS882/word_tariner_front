@@ -17,20 +17,32 @@ export class FormFieldComponent {
   @Input() form!: FormGroup;
   @Input() controlName: string = '';
   @Input() labelText: string = '';
+  @Input() infoText?: string = '';
 
   get control() {
     return this.form.get(this.controlName);
   }
 
   get hasError(): boolean | undefined {
-    return this.control?.invalid && this.control?.touched;
+    if (this.control?.invalid && this.control?.touched) {
+      return true;
+    }
+    return this.passwordsMismatchError;
   }
 
   get isValid(): boolean | undefined {
-    return this.control?.valid && this.control?.touched;
+    return (this.control?.valid && this.control?.touched)
+      && !this.passwordsMismatchError;
   }
 
   get errors() {
     return this.control?.errors;
+  }
+
+  get passwordsMismatchError() {
+    if (this.controlName === 'repeatPassword') {
+      return !!(this.form.errors && this.form.errors['passwordsMismatch']);
+    }
+    return false;
   }
 }

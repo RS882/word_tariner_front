@@ -1,4 +1,4 @@
-<form action="" class="login-form"
+<form action="" class="form"
       [formGroup]="form"
       (ngSubmit)="onSubmit()">
   <h1 class="h1 mb60">Login</h1>
@@ -6,14 +6,12 @@
   <app-form-field
     [form]="form"
     controlName="email"
-    labelText="Email">
-  </app-form-field>
+    labelText="Email"/>
 
   <app-form-field
     [form]="form"
     controlName="password"
-    labelText="Password">
-  </app-form-field>
+    labelText="Password"/>
 
   <button class="btn btn-shadow" type="submit">Login</button>
 </form>

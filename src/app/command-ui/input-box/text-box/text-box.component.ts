@@ -1,4 +1,4 @@
-import {Component, Input, signal, SimpleChanges} from '@angular/core';
+import {Component, Input, signal} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {LowerCasePipe, NgClass} from "@angular/common";
 import {EyeIconComponent} from "../../svg/eye/eye.component";
@@ -24,5 +24,9 @@ export class TextBoxComponent {
   @Input() hasError?: boolean = false;
   @Input() isValid?: boolean = false;
 
-  isPasswordVisible = signal<boolean>(this.controlName !== 'password');
+  get isPasswordFields() {
+    return this.controlName.toLowerCase().includes('password')
+  }
+
+  isPasswordVisible = signal<boolean>(false);
 }

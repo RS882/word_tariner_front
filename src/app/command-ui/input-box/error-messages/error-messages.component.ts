@@ -14,6 +14,7 @@ export class ErrorMessagesComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['validateResults']) {
+
       this.errorMessages = this.getErrorMessages(this.validateResults);
     }
   }
@@ -29,6 +30,7 @@ export class ErrorMessagesComponent {
   }
 
   getErrorMessage(key: string): string {
+
     switch (key) {
       case 'required':
         return `${this.labelText} is required.`;
@@ -36,10 +38,13 @@ export class ErrorMessagesComponent {
         return `${this.labelText} has an invalid format.`;
       case 'pattern':
         return `Invalid  ${this.labelText} format.`;
+      case 'minlength':
+      case 'maxlength':
+        return `Length of ${this.labelText}  is wrong.`;
+      case 'passwordsMismatch':
+        return `Password mismatch.`;
       default:
         return `${this.labelText} is not a valid format.`;
     }
   }
-
-
 }

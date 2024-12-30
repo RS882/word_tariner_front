@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterOutlet} from "@angular/router";
-import {SidebarComponent} from "../sidebar/sidebar.component";
 import {FormBoxComponent} from "../form-box/form-box.component";
 
 @Component({
@@ -8,7 +7,6 @@ import {FormBoxComponent} from "../form-box/form-box.component";
   standalone: true,
   imports: [
     RouterOutlet,
-    SidebarComponent,
     FormBoxComponent
   ],
   templateUrl: './form-layout.component.html',

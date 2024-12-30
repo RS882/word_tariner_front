@@ -1,42 +1,68 @@
 import {Component, inject} from '@angular/core';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {TextBoxComponent} from "../../command-ui/input-box/text-box/text-box.component";
-import {AuthService} from "../../auth/auth.service";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {Router} from "@angular/router";
-import {ErrorMessagesComponent} from "../../command-ui/input-box/error-messages/error-messages.component";
+import {FormFieldComponent} from "../../command-ui/input-box/form-field/form-field.component";
+import {UserService} from "../../data/services/user/user.service";
 
 @Component({
   selector: 'app-registration-page',
   standalone: true,
   imports: [
     FormsModule,
-
-    TextBoxComponent,
     ReactiveFormsModule,
-    ErrorMessagesComponent
+    FormFieldComponent
   ],
   templateUrl: './registration-page.component.html',
   styleUrl: './registration-page.component.scss'
 })
 export class RegistrationPageComponent {
-  authService: AuthService = inject(AuthService);
+  userService: UserService = inject(UserService);
+
   router = inject(Router);
 
   form: FormGroup = new FormGroup({
+    name: new FormControl(null,
+      [Validators.required,
+        Validators.maxLength(20),
+        Validators.minLength(3)]),
     email: new FormControl(null,
-      [Validators.required, Validators.email]),
+      [Validators.required,
+        Validators.email]),
     password: new FormControl(null,
-      [Validators.required, Validators.pattern(`^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$`)])
-  })
+      [Validators.required,
+        Validators.pattern(`^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$`)]),
+    repeatPassword: new FormControl(null,
+      [Validators.required])
+  }, {validators: this.passwordsMatchValidator('password', 'repeatPassword')});
+
+  passwordsMatchValidator(passwordField: string, repeatPasswordField: string): ValidatorFn {
+    return (form: AbstractControl): ValidationErrors | null => {
+      const password = form.get(passwordField)?.value;
+      const repeatPassword = form.get(repeatPasswordField)?.value;
+      if (password && repeatPassword && password !== repeatPassword) {
+        return {passwordsMismatch: true};
+      }
+      return null;
+    };
+  }
 
   onSubmit() {
     if (this.form.valid) {
-      this.authService.login(this.form.value)
+      this.userService.registration(this.form.value)
         .subscribe(() => {
           this.router.navigate([''])
         });
     } else {
-      console.error('Incorrect login data');
+      console.error('Incorrect registration data');
     }
   }
 }
