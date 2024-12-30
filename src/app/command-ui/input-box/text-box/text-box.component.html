@@ -9,9 +9,10 @@
       class="form-input"
       placeholder="Enter your {{ labelText | lowercase }}"
       [ngClass]="{
-        'border-red': hasError,
+        'border-red':  hasError,
         'border-green': isValid
-      }"
+    }"
+
     >
     @if (controlName === 'password') {
       <button class="password-eye-btn" type="button"

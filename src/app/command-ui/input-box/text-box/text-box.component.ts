@@ -1,4 +1,4 @@
-import {Component, Input, signal} from '@angular/core';
+import {Component, Input, signal, SimpleChanges} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {LowerCasePipe, NgClass} from "@angular/common";
 import {EyeIconComponent} from "../../svg/eye/eye.component";

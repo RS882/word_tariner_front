@@ -1,54 +1,53 @@
-<form action="" class="login-form"
-      [formGroup]="form"
-      (ngSubmit)="onSubmit()"
->
-  <h1 class="h1 mb60">Login</h1>
+<!--<form action="" class="login-form"-->
+<!--      [formGroup]="form"-->
+<!--      (ngSubmit)="onSubmit()"-->
+<!--&gt;-->
+<!--  <h1 class="h1 mb60">Login</h1>-->
 
-  <div class="input-container">
-    @let emailHasError = form.get('email')?.invalid && form.get('email')?.touched;
-    @let emailIsValid = form.get('email')?.valid && form.get('email')?.touched;
-    @let emailErrors = form.get('email')?.errors;
-    @let emailLabelText = "Email";
-    <app-text-box
-      [labelText]="emailLabelText"
-      controlName="email"
-      [formGroup]="form"
-      [hasError]="emailHasError"
-      [isValid]="emailIsValid"/>
-    <app-error-messages
-      [labelText]="emailLabelText"
-      [hasError]="emailHasError"
-      [validateResults]="{
-     'required':emailErrors?.['required'],
-     'email': emailErrors?.['email']
-    }"/>
-  </div>
+<!--  <div class="input-container">-->
+<!--    @let emailHasError = form.get('email')?.invalid && form.get('email')?.touched;-->
+<!--    @let emailIsValid = form.get('email')?.valid && form.get('email')?.touched;-->
+<!--    @let emailErrors = form.get('email')?.errors;-->
+<!--    @let emailLabelText = "Email";-->
+<!--    <app-text-box-->
+<!--      [labelText]="emailLabelText"-->
+<!--      controlName="email"-->
+<!--      [formGroup]="form"-->
 
-  <div class="input-container">
-    @let passwordHasError = form.get('password')?.invalid && form.get('password')?.touched;
-    @let passwordIsValid = form.get('password')?.valid && form.get('password')?.touched;
-    @let passwordErrors = form.get('password')?.errors;
-    @let passwordLabelText = "Password";
-    <app-text-box
-      [labelText]="passwordLabelText"
-      controlName="password"
-      [formGroup]="form"
-      [hasError]="passwordHasError"
-      [isValid]="passwordIsValid"/>
+<!--    />-->
+<!--    <app-error-messages-->
+<!--      [labelText]="emailLabelText"-->
+<!--      [hasError]="emailHasError"-->
+<!--      [validateResults]="{-->
+<!--     'required':emailErrors?.['required'],-->
+<!--     'email': emailErrors?.['email']-->
+<!--    }"/>-->
+<!--  </div>-->
 
-    <app-error-messages
-      [labelText]="passwordLabelText"
-      [hasError]="passwordHasError"
-      [validateResults]="{
-     'required':passwordErrors?.['required'],
-     'pattern': passwordErrors?.['pattern']
-    }"/>
-  </div>
+<!--  <div class="input-container">-->
+<!--    @let passwordHasError = form.get('password')?.invalid && form.get('password')?.touched;-->
+<!--    @let passwordIsValid = form.get('password')?.valid && form.get('password')?.touched;-->
+<!--    @let passwordErrors = form.get('password')?.errors;-->
+<!--    @let passwordLabelText = "Password";-->
+<!--    <app-text-box-->
+<!--      [labelText]="passwordLabelText"-->
+<!--      controlName="password"-->
+<!--      [formGroup]="form"-->
+<!--    />-->
 
-  <button class="btn btn-shadow" type="submit">Login</button>
-</form>
+<!--    <app-error-messages-->
+<!--      [labelText]="passwordLabelText"-->
+<!--      [hasError]="passwordHasError"-->
+<!--      [validateResults]="{-->
+<!--     'required':passwordErrors?.['required'],-->
+<!--     'pattern': passwordErrors?.['pattern']-->
+<!--    }"/>-->
+<!--  </div>-->
 
-<div class="login-logo">
-  <img src="assets/images/logo.webp" alt="logo" class="big-logo">
-</div>
+<!--  <button class="btn btn-shadow" type="submit">Login</button>-->
+<!--</form>-->
+
+<!--<div class="login-logo">-->
+<!--  <img src="assets/images/logo.webp" alt="logo" class="big-logo">-->
+<!--</div>-->
 
