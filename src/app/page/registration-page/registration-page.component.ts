@@ -12,6 +12,8 @@ import {
 import {Router} from "@angular/router";
 import {FormFieldComponent} from "../../command-ui/input-box/form-field/form-field.component";
 import {UserService} from "../../data/services/user/user.service";
+import {UserRegistrationInterface} from "../../data/interfaces/userRegistration.interface";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-registration-page',
@@ -26,6 +28,7 @@ import {UserService} from "../../data/services/user/user.service";
 })
 export class RegistrationPageComponent {
   userService: UserService = inject(UserService);
+  auth: AuthService = inject(AuthService);
 
   router = inject(Router);
 
@@ -57,9 +60,30 @@ export class RegistrationPageComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      this.userService.registration(this.form.value)
-        .subscribe(() => {
-          this.router.navigate([''])
+      const value = this.form.value;
+
+      const registration : UserRegistrationInterface={
+        userName: value.name,
+        password: value.password,
+        email: value.email,
+      }
+
+      this.userService.registration(registration)
+        .subscribe({
+          next: () => {
+            this.auth.login({ email: registration.email, password: registration.password })
+              .subscribe({
+                next: () => {
+                  this.router.navigate(['']);
+                },
+                error: (err) => {
+                  console.error('Login failed:', err);
+                }
+              });
+          },
+          error: (err) => {
+            console.error('Registration failed:', err);
+          }
         });
     } else {
       console.error('Incorrect registration data');

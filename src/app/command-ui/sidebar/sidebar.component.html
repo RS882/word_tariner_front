@@ -1,2 +1,8 @@
-<button class="btn btn-shadow sidebar-btn" (click)="loginClick()">Login</button>
-<button class="btn btn-shadow sidebar-btn" (click)="registerClick()">Registration</button>
+@if(!isAuthenticated()){
+  <button class="btn btn-shadow sidebar-btn" (click)="loginClick()">Login</button>
+  <button class="btn btn-shadow sidebar-btn" (click)="registerClick()">Registration</button>
+} @else {
+  <button class="btn btn-shadow sidebar-btn" (click)="logoutClick()">Logout</button>
+}
+
+

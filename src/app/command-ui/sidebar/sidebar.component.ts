@@ -1,5 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {Router} from "@angular/router";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -11,13 +12,24 @@ import {Router} from "@angular/router";
 export class SidebarComponent {
 
   router = inject(Router);
+  auth = inject(AuthService);
 
-  loginClick(){
+  isAuthenticated = signal<boolean>(false);
+
+  constructor() {
+    this.auth.authStatusChanged.subscribe(isAuth => this.isAuthenticated.set(isAuth));
+  }
+
+  loginClick() {
     this.router.navigate(['/login']);
   }
 
-  registerClick(){
+  registerClick() {
     this.router.navigate(['/registration']);
+  }
+
+  logoutClick() {
+    this.auth.logout()
   }
 
 }

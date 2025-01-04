@@ -1,3 +1,3 @@
 export interface AuthInterface {
-  "userId": number,
-  "accessToken": string}
+  userId: number,
+  accessToken: string}

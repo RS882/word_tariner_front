@@ -10,6 +10,9 @@ const getAuthUrl = (path: string): string => getFullUrl(path, AUTH_PREFIX);
 
 export const apiConstants = {
   login: getAuthUrl('login'),
+  validation: getAuthUrl('validation'),
   userRegistration: getFullUrl('user/registration'),
+  refresh: getFullUrl('refresh'),
+  logout: getAuthUrl('logout'),
 }
 
