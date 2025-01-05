@@ -14,7 +14,6 @@ export class ErrorMessagesComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['validateResults']) {
-
       this.errorMessages = this.getErrorMessages(this.validateResults);
     }
   }

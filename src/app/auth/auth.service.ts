@@ -3,9 +3,10 @@ import {HttpClient} from "@angular/common/http";
 import {LoginInterface} from "../data/interfaces/login.interface";
 import {apiConstants} from "../constants/api.url";
 import {AuthInterface} from "../data/interfaces/auth.interface";
-import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, finalize, tap, throwError} from "rxjs";
 import {ValidationInfoInterface} from "../data/interfaces/validationInfo.interface";
 import {Router} from "@angular/router";
+import {LoadingService} from "../data/services/loading/loading.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class AuthService {
 
   http = inject(HttpClient);
   router = inject(Router);
+  loading = inject(LoadingService);
 
   accessToken: string | null = null;
   userId: number | null = null;
@@ -32,6 +34,7 @@ export class AuthService {
   }
 
   login(payload: LoginInterface) {
+    this.loading.show();
     return this.http.post<AuthInterface>(apiConstants.login, payload,
       {withCredentials: true})
       .pipe(
@@ -43,11 +46,15 @@ export class AuthService {
           console.error('Login error:', err);
           this.logout();
           return throwError(() => err);
+        }),
+        finalize(()=>{
+          this.loading.hide();
         })
       );
   }
 
   validation() {
+    this.loading.show();
     return this.http.get<ValidationInfoInterface>(apiConstants.validation,
       {withCredentials: true})
       .pipe(
@@ -59,11 +66,15 @@ export class AuthService {
           console.error('Validation error:', err);
           this.logout();
           return throwError(() => err);
+        }),
+        finalize(()=>{
+          this.loading.hide();
         })
       );
   }
 
   refresh() {
+    this.loading.show();
     return this.http.get<AuthInterface>(apiConstants.refresh,
       {withCredentials: true})
       .pipe(
@@ -75,11 +86,15 @@ export class AuthService {
           console.error('Refresh error:', err);
           this.logout();
           return throwError(() => err);
+        }),
+        finalize(()=>{
+          this.loading.hide();
         })
       );
   }
 
   logout() {
+    this.loading.show();
     this.http.get(apiConstants.logout,
       {withCredentials: true})
       .pipe(
@@ -92,6 +107,9 @@ export class AuthService {
         catchError((err) => {
           console.error('Logout error:', err);
           return throwError(() => err);
+        }),
+        finalize(()=>{
+          this.loading.hide();
         })
       ).subscribe({
       complete: () => {

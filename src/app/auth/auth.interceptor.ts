@@ -44,7 +44,7 @@ const refreshTokens = (
 }
 
 const addToken = (req: HttpRequest<any>, token: string): HttpRequest<any> => {
-  console.log('Adding token to request:', token);
+  console.log('Adding token to request');
   return req.clone({
     setHeaders: {
       Authorization: `Bearer ${token}`
