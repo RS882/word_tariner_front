@@ -1,0 +1,14 @@
+.spinner-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: transparent;
+  z-index: 1001;
+  color: var(--primary-color)
+}
+
+.spinner{
+  width: 100px;
+  height: 100px;
+}
