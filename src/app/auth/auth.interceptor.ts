@@ -9,7 +9,6 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   console.log('Interceptor triggered');
   const authService = inject(AuthService);
   const token = authService.accessToken;
-  console.log(token);
   if (!token) return next(req);
 
   if (isRefreshing) {

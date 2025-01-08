@@ -3,14 +3,12 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 
 import {Router} from '@angular/router';
 import {AuthService} from "../../auth/auth.service";
-import {TextBoxComponent} from "../../command-ui/input-box/text-box/text-box.component";
-import {ErrorMessagesComponent} from "../../command-ui/input-box/error-messages/error-messages.component";
 import {FormFieldComponent} from "../../command-ui/input-box/form-field/form-field.component";
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [ReactiveFormsModule, TextBoxComponent, ErrorMessagesComponent, FormFieldComponent],
+  imports: [ReactiveFormsModule, FormFieldComponent],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
 })
@@ -28,10 +26,11 @@ export class LoginPageComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      this.authService.login(this.form.value)
-        .subscribe(() => {
-          this.router.navigate([''])
-        });
+      this.authService.login(this.form.value).subscribe({
+        next: () => this.router.navigate(['']),
+        error: () => {
+        }
+      });
     } else {
       console.error('Incorrect login data');
     }

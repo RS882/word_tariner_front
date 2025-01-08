@@ -1,4 +1,3 @@
-@if (isLoading()) {
-  <app-modal-loader/>
-}
+@if (isLoading()) {  <app-modal-loader/>}
+@if(isError()){<app-modal-error [messages]="errorMessages"/>}
 <router-outlet></router-outlet>

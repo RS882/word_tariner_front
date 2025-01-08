@@ -2,8 +2,10 @@ import {inject, Injectable} from '@angular/core';
 import {UserRegistrationInterface} from "../../interfaces/userRegistration.interface";
 import {HttpClient} from "@angular/common/http";
 import {UserInfoInterface} from "../../interfaces/userInfo.interface";
-import {apiConstants} from "../../../constants/api.url";
+import {apiConstants} from "../../../api/api.url";
 import {tap} from "rxjs";
+import {ApiService} from "../../../api/api.service";
+import {AuthInterface} from "../../interfaces/auth.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +17,18 @@ export class UserService {
   userId: number | null = null;
 
   http = inject(HttpClient);
+  apiService = inject(ApiService);
 
   registration(payload: UserRegistrationInterface) {
-    return this.http.post<UserInfoInterface>(apiConstants.userRegistration, payload)
-      .pipe(
-        tap(res => this.saveUserInfo(res))
-      );
+    const request$ = this.http.post<UserInfoInterface>(
+      apiConstants.userRegistration, payload,
+        {withCredentials: true});
+   return  this.apiService.handleRequest(
+      request$,
+      res => {
+        this.saveUserInfo(res);
+      }
+    );
   }
 
   saveUserInfo(userInfo: UserInfoInterface) {

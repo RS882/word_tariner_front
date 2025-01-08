@@ -1,12 +1,13 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {LoginInterface} from "../data/interfaces/login.interface";
-import {apiConstants} from "../constants/api.url";
+import {apiConstants} from "../api/api.url";
 import {AuthInterface} from "../data/interfaces/auth.interface";
-import {BehaviorSubject, catchError, finalize, tap, throwError} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {ValidationInfoInterface} from "../data/interfaces/validationInfo.interface";
 import {Router} from "@angular/router";
 import {LoadingService} from "../data/services/loading/loading.service";
+import {ApiService} from "../api/api.service";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AuthService {
   http = inject(HttpClient);
   router = inject(Router);
   loading = inject(LoadingService);
+  apiService = inject(ApiService);
 
   accessToken: string | null = null;
   userId: number | null = null;
@@ -34,88 +36,57 @@ export class AuthService {
   }
 
   login(payload: LoginInterface) {
-    this.loading.show();
-    return this.http.post<AuthInterface>(apiConstants.login, payload,
-      {withCredentials: true})
-      .pipe(
-        tap(res => {
-          this.saveLoginInfo(res);
-          this.setAuthStatus(true);
-        }),
-        catchError(err => {
-          console.error('Login error:', err);
-          this.logout();
-          return throwError(() => err);
-        }),
-        finalize(()=>{
-          this.loading.hide();
-        })
-      );
+    const request$ = this.http.post<AuthInterface>(
+      apiConstants.login, payload,
+      {withCredentials: true});
+    return this.apiService.handleRequest(
+      request$,
+      res => {
+        this.saveLoginInfo(res);
+        this.setAuthStatus(true);
+      }
+    );
   }
 
   validation() {
-    this.loading.show();
-    return this.http.get<ValidationInfoInterface>(apiConstants.validation,
-      {withCredentials: true})
-      .pipe(
-        tap(res => {
-          this.saveValidateInfo(res);
-          this.setAuthStatus(true);
-        }),
-        catchError(err => {
-          console.error('Validation error:', err);
-          this.logout();
-          return throwError(() => err);
-        }),
-        finalize(()=>{
-          this.loading.hide();
-        })
-      );
+    const request$ = this.http.get<ValidationInfoInterface>(
+      apiConstants.validation, {withCredentials: true});
+    return this.apiService.handleRequest(
+      request$,
+      res => {
+        this.saveValidateInfo(res);
+        this.setAuthStatus(true);
+      }
+    );
   }
 
   refresh() {
-    this.loading.show();
-    return this.http.get<AuthInterface>(apiConstants.refresh,
-      {withCredentials: true})
-      .pipe(
-        tap(res => {
-          this.saveLoginInfo(res);
-          this.setAuthStatus(true);
-        }),
-        catchError(err => {
-          console.error('Refresh error:', err);
-          this.logout();
-          return throwError(() => err);
-        }),
-        finalize(()=>{
-          this.loading.hide();
-        })
-      );
+    const request$ = this.http.get<AuthInterface>(
+      apiConstants.refresh, {withCredentials: true});
+    return this.apiService.handleRequest(
+      request$,
+      res => {
+        this.saveLoginInfo(res);
+        this.setAuthStatus(true);
+      }
+    );
   }
 
-  logout() {
-    this.loading.show();
-    this.http.get(apiConstants.logout,
-      {withCredentials: true})
-      .pipe(
-        tap(res => {
-          this.accessToken = null;
-          this.userId = null;
-          this.userRole = null;
-          this.setAuthStatus(false);
-        }),
-        catchError((err) => {
-          console.error('Logout error:', err);
-          return throwError(() => err);
-        }),
-        finalize(()=>{
-          this.loading.hide();
-        })
-      ).subscribe({
-      complete: () => {
-        this.router.navigate(['']);
+  logout(): void {
+    const request$ = this.http.get(apiConstants.logout, {withCredentials: true});
+    this.apiService.handleRequest(
+      request$,
+      () => {
+        this.accessToken = null;
+        this.userId = null;
+        this.userRole = null;
+        this.setAuthStatus(false);
       },
-    });
+      undefined,
+      () => {
+        this.router.navigate(['']);
+      }
+    );
   }
 
   saveLoginInfo(res: AuthInterface) {

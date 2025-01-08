@@ -8,9 +8,5 @@ import {Component, EventEmitter, Output} from '@angular/core';
   styleUrl: './modal-loader.component.scss'
 })
 export class ModalLoaderComponent {
-  @Output() closeEvent = new EventEmitter<void>();
 
-  close(): void {
-    this.closeEvent.emit();
-  }
 }
