@@ -1,0 +1,17 @@
+:host {
+  display: grid;
+  height: 100dvh;
+  align-items: center;
+  margin: 0 5%;
+}
+
+.select-label{
+  display: flex;
+  gap: 10px;
+}
+
+.form-select{
+  border: var(--primary-color) solid 2px;
+  font-family: "JetBrains Mono", sans-serif;
+  font-weight: bold;
+}
