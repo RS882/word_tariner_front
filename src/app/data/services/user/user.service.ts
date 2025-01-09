@@ -3,9 +3,7 @@ import {UserRegistrationInterface} from "../../interfaces/userRegistration.inter
 import {HttpClient} from "@angular/common/http";
 import {UserInfoInterface} from "../../interfaces/userInfo.interface";
 import {apiConstants} from "../../../api/api.url";
-import {tap} from "rxjs";
 import {ApiService} from "../../../api/api.service";
-import {AuthInterface} from "../../interfaces/auth.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +20,8 @@ export class UserService {
   registration(payload: UserRegistrationInterface) {
     const request$ = this.http.post<UserInfoInterface>(
       apiConstants.userRegistration, payload,
-        {withCredentials: true});
-   return  this.apiService.handleRequest(
+      {withCredentials: true});
+    return this.apiService.handleRequest(
       request$,
       res => {
         this.saveUserInfo(res);
@@ -34,7 +32,7 @@ export class UserService {
   saveUserInfo(userInfo: UserInfoInterface) {
     this.userName = userInfo.userName;
     this.userEmail = userInfo.email;
-    this.userId =userInfo.userId;
+    this.userId = userInfo.userId;
 
     console.log("userName", this.userName);
     console.log("userEmail", this.userEmail);

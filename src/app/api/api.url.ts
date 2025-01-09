@@ -14,5 +14,6 @@ export const apiConstants = {
   userRegistration: getFullUrl('user/registration'),
   refresh: getFullUrl('refresh'),
   logout: getAuthUrl('logout'),
+  lexeme: getFullUrl('lexeme'),
 }
 

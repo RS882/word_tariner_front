@@ -32,4 +32,8 @@ export class SidebarComponent {
     this.auth.logout()
   }
 
+  loadWordsClick() {
+    this.router.navigate(['/lexeme-load']);
+  }
+
 }

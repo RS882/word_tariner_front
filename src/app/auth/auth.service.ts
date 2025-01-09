@@ -16,7 +16,6 @@ export class AuthService {
 
   http = inject(HttpClient);
   router = inject(Router);
-  loading = inject(LoadingService);
   apiService = inject(ApiService);
 
   accessToken: string | null = null;
