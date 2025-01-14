@@ -1,7 +1,7 @@
 <div class="modal-backdrop" (click)="close()"></div>
 <div class="modal-window">
   <h2 class="error-title">Errors:</h2>
-  @for (errorMsg of messages; track errorMsg+245) {
+  @for (errorMsg of messages; track getUUID()) {
     <p class ="error-messages ">{{ errorMsg }}</p>
   }
   <button (click)="close()" class="btn btn-shadow ">Close</button>

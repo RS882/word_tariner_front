@@ -11,6 +11,7 @@ import {
 import {Language, LANGUAGES} from "../../data/interfaces/language.type";
 import {LexemeService} from "../../data/services/lexeme/lexeme.service";
 import {ErrorService} from "../../data/services/error/error.service";
+import {getUUID} from "../../utilites/uuid.utilites";
 
 @Component({
   selector: 'app-lemexe-load-page',
@@ -56,4 +57,5 @@ export class LemexeLoadPageComponent {
     }
   }
 
+  protected readonly getUUID = getUUID;
 }

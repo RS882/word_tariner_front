@@ -1,6 +1,6 @@
 @if (hasError && validateResults){
   <div class="error-messages">
-    @for (errorMessage of errorMessages; track errorMessage+123){
+    @for (errorMessage of errorMessages; track getUUID()){
       <small>{{ errorMessage }}</small>
     }
   </div>

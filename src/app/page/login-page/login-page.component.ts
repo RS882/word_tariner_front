@@ -18,9 +18,9 @@ export class LoginPageComponent {
   router = inject(Router);
 
   form: FormGroup = new FormGroup({
-    email: new FormControl(null,
+    email: new FormControl('example@gmail.com',
       [Validators.required, Validators.email]),
-    password: new FormControl(null,
+    password: new FormControl('136Jkn!kPu5%',
       [Validators.required, Validators.pattern(`^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$`)])
   })
 

@@ -6,7 +6,7 @@
   <label class="form-label select-label mb20">
     <h3>Source language : </h3>
     <select formControlName="sourceLanguage" class="form-select">
-      @for (language of languages; ; track language + 9018) {
+      @for (language of languages; ; track getUUID()) {
         <option [value]="language" >
           {{ language }}
         </option>
@@ -17,7 +17,7 @@
   <label class="form-label select-label mb20">
     <h3>Target language : </h3>
     <select formControlName="targetLanguage" class="form-select">
-      @for (language of languages; ; track language + 9018) {
+      @for (language of languages; ; track getUUID()) {
         <option [value]="language" >
           {{ language }}
         </option>
@@ -28,7 +28,7 @@
   <label class="form-label select-label mb20">
     <h3>Count of words : </h3>
     <select formControlName="countOfWords" class="form-select">
-      @for (count of counts; ; track count + 445) {
+      @for (count of counts; ; track getUUID()) {
         <option [value]="count" >
           {{ count }}
         </option>

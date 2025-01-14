@@ -1,5 +1,6 @@
 import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {ErrorService} from "../../data/services/error/error.service";
+import {getUUID} from "../../utilites/uuid.utilites";
 
 @Component({
   selector: 'app-modal-error',
@@ -16,4 +17,6 @@ export class ModalErrorComponent {
   close(): void {
     this.errors.hide();
   }
+
+  protected readonly getUUID = getUUID;
 }

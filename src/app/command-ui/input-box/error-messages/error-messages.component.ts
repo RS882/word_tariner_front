@@ -1,4 +1,5 @@
 import {Component, Input, SimpleChanges} from '@angular/core';
+import {getUUID} from "../../../utilites/uuid.utilites";
 
 @Component({
   selector: 'app-error-messages',
@@ -46,4 +47,6 @@ export class ErrorMessagesComponent {
         return `${this.labelText} is not a valid format.`;
     }
   }
+
+  protected readonly getUUID = getUUID;
 }
