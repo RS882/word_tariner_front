@@ -19,7 +19,8 @@ export class UserService {
 
   registration(payload: UserRegistrationInterface) {
     const request$ = this.http.post<UserInfoInterface>(
-      apiConstants.userRegistration, payload,
+      apiConstants.userRegistration,
+      payload,
       {withCredentials: true});
     return this.apiService.handleRequest(
       request$,

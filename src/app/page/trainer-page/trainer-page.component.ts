@@ -4,6 +4,7 @@ import {LexemeService} from "../../data/services/lexeme/lexeme.service";
 import {TranslationsInterface} from "../../data/interfaces/translations.interface";
 import {LexemeInterface} from "../../data/interfaces/lexeme.interface";
 import {getUUID} from "../../utilites/uuid.utilites";
+import {ResultService} from "../../data/services/result/result.service";
 
 @Component({
   selector: 'app-trainer-page',
@@ -17,6 +18,7 @@ import {getUUID} from "../../utilites/uuid.utilites";
 export class TrainerPageComponent {
 
   lexemeService = inject(LexemeService);
+  resultService = inject(ResultService);
 
   lexemes: LexemeInterface | null = null;
   sourceWord: TranslationsInterface | null = null;
@@ -32,17 +34,15 @@ export class TrainerPageComponent {
       this.lexemes = lexemes;
       if (this.lexemes && this.lexemes.translations) {
         this.weights = this.lexemes.translations.map(() => 1);
-        this.sourceWord = this.getRandomTranslationWithWeight();
-        this.listOfTranslations = this.lexemes.translations.length <= 5 ?
-          this.lexemes.translations : this.getRandomElements();
       }
+      this.getNewRandomWord();
     });
   }
 
   get sourceWordMeaning(): string {
-    if (!this.sourceWord) return '';
-    const enTranslations = this.sourceWord.translations?.EN;
-    return enTranslations ? Object.values(enTranslations)[0] : '';
+    if (!this.sourceWord || !this.lexemes) return '';
+    const translations = this.sourceWord.translations[this.lexemes.sourceLanguage];
+    return translations ? Object.values(translations)[0] : '';
   }
 
   getRandomTranslationWithWeight(): TranslationsInterface | null {
@@ -66,11 +66,14 @@ export class TrainerPageComponent {
     if (!lexemes?.translations?.length) return [];
     if (!this.sourceWord) return [];
 
+    const sourceIndex = this.lexemes?.translations
+      .findIndex(e => e === this.sourceWord);
+
     const indices = new Set<number>();
 
     while (indices.size < count) {
       const randomIndex = Math.floor(Math.random() * lexemes.translations.length);
-      indices.add(randomIndex);
+      if (randomIndex !== sourceIndex) indices.add(randomIndex);
     }
     const result: TranslationsInterface[] = Array.from(indices).map(i => lexemes.translations[i]);
     const randomIndex = Math.floor(Math.random() * (result.length + 1));
@@ -86,17 +89,27 @@ export class TrainerPageComponent {
     return meaning ? Object.values(meaning)[0] : null;
   }
 
-  onSubmit() {
-    const value = this.form.value;
-    console.log(this.sourceWord);
-    console.log(value);
-
+  getNewRandomWord() {
     if (this.lexemes && this.lexemes.translations) {
       this.sourceWord = this.getRandomTranslationWithWeight();
       this.listOfTranslations = this.lexemes?.translations.length <= 5 ?
         this.lexemes.translations :
         this.getRandomElements();
     }
+  }
+
+  onSubmit() {
+    const value = this.form.value;
+    console.log(this.sourceWord);
+    console.log(value);
+
+    if (this.sourceWord) {
+      this.resultService.addResult(
+        this.sourceWord.lexemeId,
+        this.getTargetMeaning(this.sourceWord) === value.translation)
+    }
+    this.getNewRandomWord();
+    this.form.reset();
   }
 
   protected readonly getUUID = getUUID;
