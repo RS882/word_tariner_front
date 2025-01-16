@@ -7,6 +7,7 @@ import {ApiService} from "../../../api/api.service";
 import {apiConstants} from "../../../api/api.url";
 import {LexemeInterface} from "../../interfaces/lexeme.interface";
 import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,21 @@ export class ResultService {
     });
   }
 
+  private _isSubmit = new BehaviorSubject<boolean>(false);
+  submitStatus = this._isSubmit.asObservable();
+  showModal(): void {
+    this._isSubmit.next(true);
+  }
+  hideModal(): void {
+    this._isSubmit.next(false);
+  }
+
+  private _isSuccessful = new BehaviorSubject<boolean>(false);
+  successfulStatus = this._isSuccessful.asObservable();
+  setSuccessfulStatus(isSuccess:boolean) {
+    this._isSuccessful.next(isSuccess);
+  }
+
   addResult(lexemeId: string, isCorrect: boolean): void {
 
     if (this.result.sourceLanguage === 'EN' && this.result.targetLanguage === 'EN') {
@@ -54,10 +70,11 @@ export class ResultService {
         successfulAttempts: isCorrect ? 1 : 0
       };
       results.push(newResult);
+      this.setSuccessfulStatus(isCorrect);
+      console.log(this._isSuccessful.value)
     }
     console.log(results);
   }
-
 
   sendResult(payload: ResultInterface) {
     console.log("Sending result");

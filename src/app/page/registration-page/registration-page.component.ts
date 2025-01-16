@@ -74,7 +74,7 @@ export class RegistrationPageComponent {
             this.auth.login({ email: registration.email, password: registration.password })
               .subscribe({
                 next: () => {
-                  this.router.navigate(['']);
+                  this.router.navigate(['lexeme-load']);
                 },
                 error: (err) => {
                   console.error('Login failed:', err);

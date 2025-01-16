@@ -83,9 +83,9 @@ export class AuthService {
       },
       undefined,
       () => {
-        this.router.navigate(['']);
+        this.router.navigate(['login']);
       }
-    );
+    ).subscribe();
   }
 
   saveLoginInfo(res: AuthInterface) {

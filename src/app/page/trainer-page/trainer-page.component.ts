@@ -1,10 +1,13 @@
-import {Component, inject} from '@angular/core';
+import {booleanAttribute, Component, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {LexemeService} from "../../data/services/lexeme/lexeme.service";
 import {TranslationsInterface} from "../../data/interfaces/translations.interface";
 import {LexemeInterface} from "../../data/interfaces/lexeme.interface";
 import {getUUID} from "../../utilites/uuid.utilites";
 import {ResultService} from "../../data/services/result/result.service";
+import {BehaviorSubject} from "rxjs";
+import {CurrentWordInterface} from "../../data/interfaces/currentWord.interface";
+import {TrainerService} from "../../data/services/trainer/trainer.service";
 
 @Component({
   selector: 'app-trainer-page',
@@ -19,6 +22,7 @@ export class TrainerPageComponent {
 
   lexemeService = inject(LexemeService);
   resultService = inject(ResultService);
+  trainerService = inject(TrainerService);
 
   lexemes: LexemeInterface | null = null;
   sourceWord: TranslationsInterface | null = null;
@@ -38,6 +42,7 @@ export class TrainerPageComponent {
       this.getNewRandomWord();
     });
   }
+
 
   get sourceWordMeaning(): string {
     if (!this.sourceWord || !this.lexemes) return '';
@@ -81,12 +86,12 @@ export class TrainerPageComponent {
     return result;
   }
 
-  getTargetMeaning(translation: TranslationsInterface): string | null {
+  getTargetMeaning(translation: TranslationsInterface): string {
     if (!this.lexemes) return '';
     const targetLanguage = this.lexemes.targetLanguage;
 
     const meaning = translation.translations[targetLanguage];
-    return meaning ? Object.values(meaning)[0] : null;
+    return meaning ? Object.values(meaning)[0] : '';
   }
 
   getNewRandomWord() {
@@ -100,15 +105,20 @@ export class TrainerPageComponent {
 
   onSubmit() {
     const value = this.form.value;
-    console.log(this.sourceWord);
-    console.log(value);
-
     if (this.sourceWord) {
+      const isSuccessful = this.getTargetMeaning(this.sourceWord) === value.translation;
+
       this.resultService.addResult(
         this.sourceWord.lexemeId,
-        this.getTargetMeaning(this.sourceWord) === value.translation)
+        isSuccessful)
     }
+    this.trainerService.setCurrentWordStatus({
+      word: this.sourceWordMeaning,
+      translation: this.sourceWord ? this.getTargetMeaning(this.sourceWord) : ''
+    });
     this.getNewRandomWord();
+
+    this.resultService.showModal();
     this.form.reset();
   }
 

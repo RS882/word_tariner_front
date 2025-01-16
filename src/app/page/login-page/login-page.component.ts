@@ -27,7 +27,7 @@ export class LoginPageComponent {
   onSubmit() {
     if (this.form.valid) {
       this.authService.login(this.form.value).subscribe({
-        next: () => this.router.navigate(['']),
+        next: () => this.router.navigate(['lexeme-load']),
         error: () => {
         }
       });

@@ -1,0 +1,9 @@
+<div class="modal-backdrop" (click)="close()"></div>
+<div class="modal-window">
+  <h2 [ngClass]="isSuccess() ? 'success-title' : 'error-title'">
+    {{ isSuccess() ? 'Success' : 'Error' }}:</h2>
+  <p class="result-message">{{ this.currentWord.word + ' -> ' + this.currentWord.translation }}</p>
+
+  <button (click)="close()" class="btn btn-shadow ">Close</button>
+</div>
+

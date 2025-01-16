@@ -1,3 +1,10 @@
-@if (isLoading()) {  <app-modal-loader/>}
-@if(isError()){<app-modal-error [messages]="errorMessages"/>}
+@if (isLoading()) {
+  <app-modal-loader/>
+}
+@if (isError()) {
+  <app-modal-error [messages]="errorMessages"/>
+}
+@if (isResult()) {
+  <app-modal-result [currentWord]="currentWord" [isSuccessful]="isSuccessfulResult"/>
+}
 <router-outlet></router-outlet>

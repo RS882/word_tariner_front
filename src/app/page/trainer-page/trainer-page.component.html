@@ -1,24 +1,24 @@
 <form
-  action="" class="form"
+  action="" class="form form-flex"
   [formGroup]="form"
   (ngSubmit)="onSubmit()">
-  <h1 class="h1 mb60">Chose correct translation</h1>
-  <div>
-    {{lexemes?.sourceLanguage + ' -> ' + lexemes?.targetLanguage}}
+  <h1 class="h1">Chose correct translation</h1>
+  <div class="languages">
+    {{ lexemes?.sourceLanguage + ' -> ' + lexemes?.targetLanguage }}
   </div>
-<div>
-  {{sourceWordMeaning}}
-</div>
+  <div class="source-word">
+    {{ sourceWordMeaning }}
+  </div>
 
-  <div >
-    @for (translation of listOfTranslations; track getUUID()){
-      <label>
+  <div class="radio-group">
+    @for (translation of listOfTranslations; track getUUID()) {
+      <label class="label-radio">
         <input
           type="radio"
           [value]="getTargetMeaning(translation)"
           formControlName="translation"
         />
-        {{ getTargetMeaning(translation) }}
+        <span> {{ getTargetMeaning(translation) }}</span>
       </label>
     }
   </div>
