@@ -29,7 +29,7 @@ export class ResultService {
       if (lexemes) {
         this.result.sourceLanguage = lexemes.sourceLanguage;
         this.result.targetLanguage = lexemes.targetLanguage;
-      }else {
+      } else {
         this.result.sourceLanguage = 'EN';
         this.result.targetLanguage = 'EN';
       }
@@ -38,17 +38,13 @@ export class ResultService {
 
   private _isSubmit = new BehaviorSubject<boolean>(false);
   submitStatus = this._isSubmit.asObservable();
+
   showModal(): void {
     this._isSubmit.next(true);
   }
+
   hideModal(): void {
     this._isSubmit.next(false);
-  }
-
-  private _isSuccessful = new BehaviorSubject<boolean>(false);
-  successfulStatus = this._isSuccessful.asObservable();
-  setSuccessfulStatus(isSuccess:boolean) {
-    this._isSuccessful.next(isSuccess);
   }
 
   addResult(lexemeId: string, isCorrect: boolean): void {
@@ -70,10 +66,7 @@ export class ResultService {
         successfulAttempts: isCorrect ? 1 : 0
       };
       results.push(newResult);
-      this.setSuccessfulStatus(isCorrect);
-      console.log(this._isSuccessful.value)
     }
-    console.log(results);
   }
 
   sendResult(payload: ResultInterface) {
@@ -91,8 +84,7 @@ export class ResultService {
   }
 
   clearResult() {
-    this.result.resultDtos= [];
-    console.log("Clearing result : ");
-    console.log(this.result);
+    this.result.resultDtos = [];
+    console.log("Clearing result");
   }
 }

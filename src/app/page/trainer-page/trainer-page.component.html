@@ -1,24 +1,31 @@
+@let sourceLanguage=this.lexemes?.sourceLanguage;
+@let targetLanguage =this.lexemes?.targetLanguage;
+@let sourceWord =  this.getSourceWordMeaning();
+
 <form
   action="" class="form form-flex"
   [formGroup]="form"
   (ngSubmit)="onSubmit()">
   <h1 class="h1">Chose correct translation</h1>
   <div class="languages">
-    {{ lexemes?.sourceLanguage + ' -> ' + lexemes?.targetLanguage }}
+    {{ sourceLanguage + ' -> ' + targetLanguage }}
   </div>
   <div class="source-word">
-    {{ sourceWordMeaning }}
+    {{ sourceWord}}
   </div>
 
   <div class="radio-group">
     @for (translation of listOfTranslations; track getUUID()) {
+
+      @let currentValue = this.getTargetMeaning(translation);
+
       <label class="label-radio">
         <input
           type="radio"
-          [value]="getTargetMeaning(translation)"
+          [value]="currentValue"
           formControlName="translation"
         />
-        <span> {{ getTargetMeaning(translation) }}</span>
+        <span> {{ currentValue }}</span>
       </label>
     }
   </div>

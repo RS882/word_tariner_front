@@ -13,24 +13,12 @@ import {CurrentWordInterface} from "../../../data/interfaces/currentWord.interfa
   styleUrl: './modal-result.component.scss'
 })
 export class ModalResultComponent {
-  @Input() currentWord: CurrentWordInterface = {word: '', translation: ''};
-  @Input() isSuccessful = false
+  @Input() currentWord: CurrentWordInterface = {word: '', translation: '', isSuccessful: false};
 
   result = inject(ResultService);
 
-  isSuccess = signal<boolean>(this.isSuccessful);
-
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isSuccessful']) {
-      this.isSuccess.set(this.isSuccessful);
-      console.log('ModalResultComponent: isSuccessful updated to', this.isSuccessful);
-    }
-  }
-
   close(): void {
     this.result.hideModal();
-    this.result.setSuccessfulStatus(false);
+    this.currentWord = {word: '', translation: '', isSuccessful: false};
   }
-
 }

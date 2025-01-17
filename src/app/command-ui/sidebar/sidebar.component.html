@@ -1,9 +1,12 @@
-@if(!isAuthenticated()){
-  <button class="btn btn-shadow sidebar-btn" (click)="loginClick()">Login</button>
-  <button class="btn btn-shadow sidebar-btn" (click)="registerClick()">Registration</button>
-} @else {
+@if(isAuthenticated()){
   <button class="btn btn-shadow sidebar-btn" (click)="logoutClick()">Logout</button>
   <button class="btn btn-shadow sidebar-btn" (click)="loadWordsClick()">Load words</button>
+} @else {
+  <button class="btn btn-shadow sidebar-btn" (click)="loginClick()">Login</button>
+  <button class="btn btn-shadow sidebar-btn" (click)="registerClick()">Registration</button>
 }
 
+@if(isLexemesLoaded()){
+<app-result-table/>
+}
 

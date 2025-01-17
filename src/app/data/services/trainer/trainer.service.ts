@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {CurrentWordInterface} from "../../interfaces/currentWord.interface";
 
@@ -8,7 +8,8 @@ import {CurrentWordInterface} from "../../interfaces/currentWord.interface";
 export class TrainerService {
 
 
-  private _currentWord = new BehaviorSubject<CurrentWordInterface>({word: '', translation: ''});
+  private _currentWord = new BehaviorSubject<CurrentWordInterface>(
+    {word: '', translation: '', isSuccessful: false});
 
   currentWordStatus = this._currentWord.asObservable();
 

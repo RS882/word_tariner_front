@@ -24,7 +24,6 @@ export class AppComponent {
   result = inject(ResultService);
   trainer = inject(TrainerService);
 
-
   isLoading = signal<boolean>(false);
 
   isError = signal<boolean>(false);
@@ -32,8 +31,7 @@ export class AppComponent {
   isResult = signal<boolean>(false);
 
   errorMessages: string[] = [];
-  currentWord: CurrentWordInterface = {word: '', translation: ''};
-  isSuccessfulResult = false;
+  currentWord: CurrentWordInterface = {word: '', translation: '', isSuccessful: false};
 
   constructor() {
     this.loading.loadStatus.subscribe(isLoad => this.isLoading.set(isLoad));
@@ -42,11 +40,6 @@ export class AppComponent {
       this.errorMessages = errors;
     });
     this.result.submitStatus.subscribe(isSubmit => this.isResult.set(isSubmit));
-    this.result.successfulStatus.subscribe(isSuccess=> {
-      console.log('Received successfulStatus:', isSuccess);
-      this.isSuccessfulResult=(isSuccess)
-    });
     this.trainer.currentWordStatus.subscribe(word => this.currentWord = word);
-
   }
 }

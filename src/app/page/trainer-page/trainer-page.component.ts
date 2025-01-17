@@ -1,12 +1,10 @@
-import {booleanAttribute, Component, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {LexemeService} from "../../data/services/lexeme/lexeme.service";
 import {TranslationsInterface} from "../../data/interfaces/translations.interface";
 import {LexemeInterface} from "../../data/interfaces/lexeme.interface";
 import {getUUID} from "../../utilites/uuid.utilites";
 import {ResultService} from "../../data/services/result/result.service";
-import {BehaviorSubject} from "rxjs";
-import {CurrentWordInterface} from "../../data/interfaces/currentWord.interface";
 import {TrainerService} from "../../data/services/trainer/trainer.service";
 
 @Component({
@@ -43,12 +41,19 @@ export class TrainerPageComponent {
     });
   }
 
-
-  get sourceWordMeaning(): string {
+  getSourceWordMeaning(): string {
     if (!this.sourceWord || !this.lexemes) return '';
     const translations = this.sourceWord.translations[this.lexemes.sourceLanguage];
     return translations ? Object.values(translations)[0] : '';
   }
+
+  getTargetMeaning(translation: TranslationsInterface): string {
+    if (!this.lexemes) return '';
+    const targetLanguage = this.lexemes.targetLanguage;
+    const meaning = translation.translations[targetLanguage];
+    return meaning ? Object.values(meaning)[0] : '';
+  }
+
 
   getRandomTranslationWithWeight(): TranslationsInterface | null {
     if (!this.lexemes?.translations?.length) return null;
@@ -86,14 +91,6 @@ export class TrainerPageComponent {
     return result;
   }
 
-  getTargetMeaning(translation: TranslationsInterface): string {
-    if (!this.lexemes) return '';
-    const targetLanguage = this.lexemes.targetLanguage;
-
-    const meaning = translation.translations[targetLanguage];
-    return meaning ? Object.values(meaning)[0] : '';
-  }
-
   getNewRandomWord() {
     if (this.lexemes && this.lexemes.translations) {
       this.sourceWord = this.getRandomTranslationWithWeight();
@@ -110,12 +107,14 @@ export class TrainerPageComponent {
 
       this.resultService.addResult(
         this.sourceWord.lexemeId,
-        isSuccessful)
+        isSuccessful);
+
+      this.trainerService.setCurrentWordStatus({
+        word: this.getSourceWordMeaning(),
+        translation: this.sourceWord ? this.getTargetMeaning(this.sourceWord) : '',
+        isSuccessful: isSuccessful
+      });
     }
-    this.trainerService.setCurrentWordStatus({
-      word: this.sourceWordMeaning,
-      translation: this.sourceWord ? this.getTargetMeaning(this.sourceWord) : ''
-    });
     this.getNewRandomWord();
 
     this.resultService.showModal();
