@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {LexemeService} from "../../data/services/lexeme/lexeme.service";
 import {ResultTableComponent} from "../result-table/result-table/result-table.component";
+import {ResultService} from "../../data/services/result/result.service";
+import {ResultsCountInterface} from "../../data/interfaces/resultsCount.interface";
 
 @Component({
   selector: 'app-sidebar',
@@ -18,6 +20,9 @@ export class SidebarComponent {
   router = inject(Router);
   auth = inject(AuthService);
   lexeme = inject(LexemeService);
+  result = inject(ResultService);
+
+  count: ResultsCountInterface = {attemptsCount: 0, successfulAttemptsCount: 0};
 
   isAuthenticated = signal<boolean>(false);
 
@@ -26,6 +31,7 @@ export class SidebarComponent {
   constructor() {
     this.auth.authStatusChanged.subscribe(isAuth => this.isAuthenticated.set(isAuth));
     this.lexeme.lexemesLoadStatusChanged.subscribe(isLoaded => this.isLexemesLoaded.set(isLoaded));
+    this.result.resultCountStatus.subscribe(value => this.count = value)
   }
 
   loginClick() {

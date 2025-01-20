@@ -1,0 +1,17 @@
+:host{
+  display: flex;
+  border: 1px solid var(--primary-color);
+  margin: 5px;
+  padding: 5px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.result-table_message{
+  display: flex;
+  gap: 5px;
+  & p{
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+}

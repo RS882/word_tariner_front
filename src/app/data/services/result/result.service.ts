@@ -8,6 +8,7 @@ import {apiConstants} from "../../../api/api.url";
 import {LexemeInterface} from "../../interfaces/lexeme.interface";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs";
+import {ResultsCountInterface} from "../../interfaces/resultsCount.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -47,8 +48,19 @@ export class ResultService {
     this._isSubmit.next(false);
   }
 
-  addResult(lexemeId: string, isCorrect: boolean): void {
+  private _resultsCount = new BehaviorSubject<ResultsCountInterface>(
+    {attemptsCount: 0, successfulAttemptsCount: 0});
+  resultCountStatus = this._resultsCount.asObservable();
 
+  set resultsCount(value: ResultsCountInterface) {
+    this._resultsCount.next(value);
+  }
+
+  get resultsCount(): ResultsCountInterface {
+    return this._resultsCount.value;
+  }
+
+  addResult(lexemeId: string, isCorrect: boolean): void {
     if (this.result.sourceLanguage === 'EN' && this.result.targetLanguage === 'EN') {
       this.errorService.show(['Selected languages match']);
       console.error(`Error adding ${this.result.sourceLanguage}: ${this.result.targetLanguage}`);
@@ -67,6 +79,15 @@ export class ResultService {
       };
       results.push(newResult);
     }
+    this.setCountOfResults(isCorrect);
+  }
+
+  setCountOfResults(isCorrect: boolean): void {
+    const result = this.resultsCount;
+    this.resultsCount = {
+      attemptsCount: result.attemptsCount + 1,
+      successfulAttemptsCount: result.successfulAttemptsCount + (isCorrect ? 1 : 0)
+    };
   }
 
   sendResult(payload: ResultInterface) {
@@ -85,6 +106,7 @@ export class ResultService {
 
   clearResult() {
     this.result.resultDtos = [];
+    this.resultsCount = {attemptsCount: 0, successfulAttemptsCount: 0};
     console.log("Clearing result");
   }
 }
