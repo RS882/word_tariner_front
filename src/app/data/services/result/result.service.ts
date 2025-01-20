@@ -24,9 +24,6 @@ export class ResultService {
 
   constructor() {
     this.lexemeService.lexemesChanged.subscribe(lexemes => {
-      if (this.result.resultDtos.length > 0) {
-        this.sendResult(this.result);
-      }
       if (lexemes) {
         this.result.sourceLanguage = lexemes.sourceLanguage;
         this.result.targetLanguage = lexemes.targetLanguage;
@@ -90,11 +87,12 @@ export class ResultService {
     };
   }
 
-  sendResult(payload: ResultInterface) {
+  sendResult() {
     console.log("Sending result");
+    if (this.result.resultDtos.length <= 0) return;
     const request$ = this.http.post<LexemeInterface>(
       apiConstants.userResult,
-      payload,
+      this.result,
       {withCredentials: true}
     );
     this.api.handleRequest(

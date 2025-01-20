@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {LexemeService} from "../../data/services/lexeme/lexeme.service";
 import {TranslationsInterface} from "../../data/interfaces/translations.interface";
@@ -6,6 +6,10 @@ import {LexemeInterface} from "../../data/interfaces/lexeme.interface";
 import {getUUID} from "../../utilites/uuid.utilites";
 import {ResultService} from "../../data/services/result/result.service";
 import {TrainerService} from "../../data/services/trainer/trainer.service";
+import {ErrorService} from "../../data/services/error/error.service";
+import {Subscription} from "rxjs";
+import {NavigationStart, Router} from "@angular/router";
+import {SaveResultService} from "../../data/services/save-result/save-result.service";
 
 @Component({
   selector: 'app-trainer-page',
@@ -16,16 +20,21 @@ import {TrainerService} from "../../data/services/trainer/trainer.service";
   templateUrl: './trainer-page.component.html',
   styleUrl: './trainer-page.component.scss'
 })
-export class TrainerPageComponent {
+export class TrainerPageComponent implements OnDestroy{
 
   lexemeService = inject(LexemeService);
   resultService = inject(ResultService);
   trainerService = inject(TrainerService);
+  errorService = inject(ErrorService);
+  router = inject(Router);
+  saveResult=inject(SaveResultService);
 
   lexemes: LexemeInterface | null = null;
   sourceWord: TranslationsInterface | null = null;
   listOfTranslations: TranslationsInterface[] = [];
   weights: number[] = [];
+
+  private routerSubscription: Subscription;
 
   form: FormGroup = new FormGroup({
     translation: new FormControl(null, [Validators.required])
@@ -39,12 +48,38 @@ export class TrainerPageComponent {
       }
       this.getNewRandomWord();
     });
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.saveResult.showModal();
+        console.log('Data sent before navigating to:', event.url);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   getSourceWordMeaning(): string {
     if (!this.sourceWord || !this.lexemes) return '';
-    const translations = this.sourceWord.translations[this.lexemes.sourceLanguage];
-    return translations ? Object.values(translations)[0] : '';
+    let translations = this.sourceWord.translations[this.lexemes.sourceLanguage];
+    return translations ? this.rearrangeString(Object.values(translations)[0]) : '';
+  }
+
+  rearrangeString(text: string): string {
+    if(this.lexemes && this.lexemes.sourceLanguage==='DE') {
+      const parts = text.trim().split(/\s+/);
+      if (parts.length > 1) {
+        const lastPart = parts[parts.length - 1];
+        if (['der', 'die', 'das'].includes(lastPart)) {
+          parts.pop();
+          parts.unshift(lastPart);
+        }
+      }
+      return parts.join(" ");
+    }else return text;
   }
 
   getTargetMeaning(translation: TranslationsInterface): string {
@@ -101,6 +136,7 @@ export class TrainerPageComponent {
   }
 
   onSubmit() {
+    if(this.form.valid){
     const value = this.form.value;
     if (this.sourceWord) {
       const isSuccessful = this.getTargetMeaning(this.sourceWord) === value.translation;
@@ -119,6 +155,9 @@ export class TrainerPageComponent {
 
     this.resultService.showModal();
     this.form.reset();
+    }else{
+      this.errorService.show(['Сhoose your answer']);
+    }
   }
 
   protected readonly getUUID = getUUID;

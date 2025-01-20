@@ -8,11 +8,13 @@ import {ResultService} from "./data/services/result/result.service";
 import {ModalResultComponent} from "./page/modal/modal-result/modal-result.component";
 import {TrainerService} from "./data/services/trainer/trainer.service";
 import {CurrentWordInterface} from "./data/interfaces/currentWord.interface";
+import {SaveResultService} from "./data/services/save-result/save-result.service";
+import {ModalSaveResultComponent} from "./page/modal/modal-save-result/modal-save-result/modal-save-result.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ModalLoaderComponent, ModalErrorComponent, ModalResultComponent],
+  imports: [RouterOutlet, ModalLoaderComponent, ModalErrorComponent, ModalResultComponent, ModalSaveResultComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -23,12 +25,15 @@ export class AppComponent {
   errorService = inject(ErrorService);
   result = inject(ResultService);
   trainer = inject(TrainerService);
+  saveResult = inject(SaveResultService);
 
   isLoading = signal<boolean>(false);
 
   isError = signal<boolean>(false);
 
   isResult = signal<boolean>(false);
+
+  isUrlChanged = signal<boolean>(false);
 
   errorMessages: string[] = [];
   currentWord: CurrentWordInterface = {word: '', translation: '', isSuccessful: false};
@@ -41,5 +46,6 @@ export class AppComponent {
     });
     this.result.submitStatus.subscribe(isSubmit => this.isResult.set(isSubmit));
     this.trainer.currentWordStatus.subscribe(word => this.currentWord = word);
+    this.saveResult.urlChangedStatus.subscribe(isChange => this.isUrlChanged.set(isChange));
   }
 }
