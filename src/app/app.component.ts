@@ -1,5 +1,5 @@
-import {Component, inject, signal} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {Component, inject, OnInit, signal} from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router';
 import {ModalLoaderComponent} from "./page/modal/modal-loader/modal-loader.component";
 import {LoadingService} from "./data/services/loading/loading.service";
 import {ErrorService} from "./data/services/error/error.service";
@@ -10,6 +10,8 @@ import {TrainerService} from "./data/services/trainer/trainer.service";
 import {CurrentWordInterface} from "./data/interfaces/currentWord.interface";
 import {SaveResultService} from "./data/services/save-result/save-result.service";
 import {ModalSaveResultComponent} from "./page/modal/modal-save-result/modal-save-result/modal-save-result.component";
+import {AuthService} from "./auth/auth.service";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,7 @@ import {ModalSaveResultComponent} from "./page/modal/modal-save-result/modal-sav
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'word-trainer';
 
   loading = inject(LoadingService);
@@ -26,6 +28,8 @@ export class AppComponent {
   result = inject(ResultService);
   trainer = inject(TrainerService);
   saveResult = inject(SaveResultService);
+  auth=inject(AuthService);
+  route=inject(Router);
 
   isLoading = signal<boolean>(false);
 
@@ -47,5 +51,16 @@ export class AppComponent {
     this.result.submitStatus.subscribe(isSubmit => this.isResult.set(isSubmit));
     this.trainer.currentWordStatus.subscribe(word => this.currentWord = word);
     this.saveResult.urlChangedStatus.subscribe(isChange => this.isUrlChanged.set(isChange));
+  }
+
+  ngOnInit(): void {
+    this.loading.show();
+    const token = this.auth.getTokenFromCookies();
+    if (token) {
+      this.auth.accessToken = token;
+      this.auth.validation();
+      this.route.navigate(['lexeme-load']);
+    }
+    this.loading.hide();
   }
 }
