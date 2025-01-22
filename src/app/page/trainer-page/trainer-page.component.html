@@ -8,7 +8,9 @@
   (ngSubmit)="onSubmit()">
   <h1 class="h1">Chose correct translation</h1>
   <div class="languages">
-    {{ sourceLanguage + ' -> ' + targetLanguage }}
+    {{ sourceLanguage}}
+    <svg icon="arrow" class="arrow-icon"/>
+    {{targetLanguage }}
   </div>
   <div class="source-word">
     {{ sourceWord}}

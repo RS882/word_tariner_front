@@ -1,8 +1,7 @@
 import {Component, Input, signal} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {LowerCasePipe, NgClass} from "@angular/common";
-import {EyeIconComponent} from "../../svg/eye/eye.component";
-import {EyeSlashIconComponent} from "../../svg/eye-slash/eye-slash.component";
+import {SvgIconComponent} from "../../svg-icon/svg-icon.component";
 
 @Component({
   selector: 'app-text-box',
@@ -11,8 +10,7 @@ import {EyeSlashIconComponent} from "../../svg/eye-slash/eye-slash.component";
     ReactiveFormsModule,
     LowerCasePipe,
     NgClass,
-    EyeIconComponent,
-    EyeSlashIconComponent
+    SvgIconComponent
   ],
   templateUrl: './text-box.component.html',
   styleUrl: './text-box.component.scss'

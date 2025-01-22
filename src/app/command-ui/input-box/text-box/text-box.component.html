@@ -16,9 +16,9 @@
       <button class="password-eye-btn" type="button"
               (click)="isPasswordVisible.set(!isPasswordVisible())">
         @if (isPasswordVisible()) {
-          <app-eye-slash-icon/>
+          <svg icon="eye_slash" class="eye-icon"/>
         } @else {
-          <app-eye-icon/>
+          <svg icon="eye" class="eye-icon"/>
         }
       </button>
     }

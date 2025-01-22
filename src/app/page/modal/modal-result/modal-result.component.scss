@@ -2,6 +2,9 @@
   font-weight: bold;
   color: var(--dark-color);
   overflow-wrap: anywhere;
+  display: flex;
+  align-self: center;
+  gap: 5px;
 }
 
 .error-title{

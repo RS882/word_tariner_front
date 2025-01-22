@@ -72,6 +72,7 @@ export class AuthService {
   refresh() {
     const request$ = this.http.get<AuthInterface>(
       apiConstants.refresh, {withCredentials: true});
+    console.log('Refresh request');
     return this.apiService.handleRequest(
       request$,
       res => {

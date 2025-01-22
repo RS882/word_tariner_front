@@ -1,12 +1,16 @@
 @let isSuccessful = this.currentWord.isSuccessful;
-@let word =this.currentWord.word;
+@let word = this.currentWord.word;
 @let translation = this.currentWord.translation;
 
 <div class="modal-backdrop" (click)="close()"></div>
 <div class="modal-window">
   <h2 [ngClass]="isSuccessful ? 'success-title' : 'error-title'">
     {{ isSuccessful ? 'Success' : 'Error' }}:</h2>
-  <p class="result-message">{{ word + ' -> ' + translation }}</p>
+  <div class="result-message">
+    {{ word }}
+    <svg icon="arrow" class="arrow-icon"/>
+    {{ translation }}
+  </div>
 
   <button (click)="close()" class="btn btn-shadow ">Close</button>
 </div>

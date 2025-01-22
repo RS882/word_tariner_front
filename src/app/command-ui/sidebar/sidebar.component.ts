@@ -31,7 +31,10 @@ export class SidebarComponent {
   constructor() {
     this.auth.authStatusChanged.subscribe(isAuth => this.isAuthenticated.set(isAuth));
     this.lexeme.lexemesLoadStatusChanged.subscribe(isLoaded => this.isLexemesLoaded.set(isLoaded));
-    this.result.resultCountStatus.subscribe(value => this.count = value)
+    this.result.resultCountStatus.subscribe(value => {
+      console.log('resultCountStatus:', value);
+      this.count = value
+    })
   }
 
   loginClick() {

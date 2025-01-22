@@ -10,12 +10,14 @@ import {ErrorService} from "../../data/services/error/error.service";
 import {Subscription} from "rxjs";
 import {NavigationStart, Router} from "@angular/router";
 import {SaveResultService} from "../../data/services/save-result/save-result.service";
+import {SvgIconComponent} from "../../command-ui/svg-icon/svg-icon.component";
 
 @Component({
   selector: 'app-trainer-page',
   standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SvgIconComponent
   ],
   templateUrl: './trainer-page.component.html',
   styleUrl: './trainer-page.component.scss'
