@@ -4,15 +4,24 @@ import {HttpClient} from "@angular/common/http";
 import {UserInfoInterface} from "../../interfaces/userInfo.interface";
 import {apiConstants} from "../../../api/api.url";
 import {ApiService} from "../../../api/api.service";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  userName: string = '';
-  userEmail: string = '';
-  userId: number | null = null;
+  private _me = new BehaviorSubject<UserInfoInterface | null>(null);
+
+  meStatus = this._me.asObservable();
+
+  set me(value: UserInfoInterface | null) {
+    this._me.next(value);
+  }
+
+  get me(): UserInfoInterface | null {
+    return this._me ? this._me.value : null;
+  }
 
   http = inject(HttpClient);
   apiService = inject(ApiService);
@@ -30,13 +39,19 @@ export class UserService {
     );
   }
 
-  saveUserInfo(userInfo: UserInfoInterface) {
-    this.userName = userInfo.userName;
-    this.userEmail = userInfo.email;
-    this.userId = userInfo.userId;
+  getMe() {
+    const request$ = this.http.get<UserInfoInterface>(
+      apiConstants.userMe,
+      {withCredentials: true});
+    return this.apiService.handleRequest(
+      request$,
+      res => {
+        this.saveUserInfo(res);
+      }
+    ).subscribe();
+  }
 
-    console.log("userName", this.userName);
-    console.log("userEmail", this.userEmail);
-    console.log("userId", this.userId);
+  saveUserInfo(userInfo: UserInfoInterface) {
+    this.me = userInfo;
   }
 }

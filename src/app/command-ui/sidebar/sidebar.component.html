@@ -1,4 +1,11 @@
-@if(isAuthenticated()){
+@if (me()) {
+  <div class="user-box">
+    <svg icon="user" class="user-icon"/>
+    <div class="user-box_text user-name">{{ me()?.userName }}</div>
+  </div>
+}
+
+@if (isAuthenticated()) {
   <button class="btn btn-shadow sidebar-btn" (click)="logoutClick()">Logout</button>
   <button class="btn btn-shadow sidebar-btn" (click)="loadWordsClick()">Load words</button>
 } @else {
@@ -6,7 +13,7 @@
   <button class="btn btn-shadow sidebar-btn" (click)="registerClick()">Registration</button>
 }
 
-@if(isLexemesLoaded()){
-<app-result-table [resultsCount]="count"/>
+@if (isLexemesLoaded()) {
+  <app-result-table [resultsCount]="count"/>
 }
 

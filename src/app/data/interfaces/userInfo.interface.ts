@@ -1,5 +1,6 @@
 export interface UserInfoInterface {
   userId: number,
   userName: string,
-  email: string
+  email: string,
+  roles: string[]
 }

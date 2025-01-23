@@ -5,12 +5,16 @@ import {LexemeService} from "../../data/services/lexeme/lexeme.service";
 import {ResultTableComponent} from "../result-table/result-table/result-table.component";
 import {ResultService} from "../../data/services/result/result.service";
 import {ResultsCountInterface} from "../../data/interfaces/resultsCount.interface";
+import {UserService} from "../../data/services/user/user.service";
+import {UserInfoInterface} from "../../data/interfaces/userInfo.interface";
+import {SvgIconComponent} from "../svg-icon/svg-icon.component";
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [
-    ResultTableComponent
+    ResultTableComponent,
+    SvgIconComponent
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
@@ -21,8 +25,11 @@ export class SidebarComponent {
   auth = inject(AuthService);
   lexeme = inject(LexemeService);
   result = inject(ResultService);
+  user = inject(UserService);
 
   count: ResultsCountInterface = {attemptsCount: 0, successfulAttemptsCount: 0};
+
+  me = signal<UserInfoInterface | null>(null);
 
   isAuthenticated = signal<boolean>(false);
 
@@ -31,11 +38,9 @@ export class SidebarComponent {
   constructor() {
     this.auth.authStatusChanged.subscribe(isAuth => this.isAuthenticated.set(isAuth));
     this.lexeme.lexemesLoadStatusChanged.subscribe(isLoaded => this.isLexemesLoaded.set(isLoaded));
-    this.result.resultCountStatus.subscribe(value => {
-      console.log('resultCountStatus:', value);
-      this.count = value
-    })
-  }
+    this.result.resultCountStatus.subscribe(value => this.count = value)
+    this.user.meStatus.subscribe(value => this.me.set(value))
+  };
 
   loginClick() {
     this.router.navigate(['/login']);
@@ -52,5 +57,4 @@ export class SidebarComponent {
   loadWordsClick() {
     this.router.navigate(['/lexeme-load']);
   }
-
 }

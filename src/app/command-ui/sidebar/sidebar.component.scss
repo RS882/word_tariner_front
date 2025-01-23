@@ -6,6 +6,28 @@
   flex-direction: column;
   gap: 16px;
   }
+
 .sidebar-btn{
   height: 45px;
+}
+
+.user-box{
+  display: flex;
+  align-items: center;
+  gap:10px;
+  color: var(--primary-color);
+}
+
+.user-box_text{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.user-icon{
+  width: 40px;
+  height: 40px;
+}
+
+.user-name{
+  color: var(--ligth-color);
 }

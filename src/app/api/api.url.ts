@@ -18,6 +18,7 @@ export const apiConstants = {
   refresh: getAuthUrl('refresh'),
 
   userRegistration: getUserUrl('registration'),
+  userMe: getUserUrl('me'),
   userResult: getUserUrl('lexeme/result'),
 
   lexeme: getFullUrl('lexeme'),

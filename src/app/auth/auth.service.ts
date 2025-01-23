@@ -8,6 +8,7 @@ import {ValidationInfoInterface} from "../data/interfaces/validationInfo.interfa
 import {Router} from "@angular/router";
 import {ApiService} from "../api/api.service";
 import {CookieService} from "ngx-cookie-service";
+import {UserService} from "../data/services/user/user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class AuthService {
   router = inject(Router);
   apiService = inject(ApiService);
   cookie = inject(CookieService);
+  user = inject(UserService);
 
   private _accessToken: string = '';
   userId: number | null = null;
@@ -92,6 +94,7 @@ export class AuthService {
         this.userRole = null;
         this.setAuthStatus(false);
         this.cookie.deleteAll();
+        this.user.me=null;
       },
       undefined,
       () => {
@@ -104,6 +107,7 @@ export class AuthService {
     console.log(res);
     this.accessToken = res.accessToken;
     this.saveAccessToken(res.accessToken);
+    this.user.getMe();
     this.userId = res.userId;
   }
 
@@ -112,6 +116,7 @@ export class AuthService {
       console.log(res)
       this.userRole = res.roles;
       this.userId = res.userId;
+      this.user.getMe();
     } else this.logout();
   }
 
