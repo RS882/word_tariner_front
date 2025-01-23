@@ -78,3 +78,14 @@ input[type="radio"] {
 .label-radio input[type="radio"]:checked + span{
   color: var(--green-color);
 }
+
+.checkbox-label{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.checkbox-text{
+  font-size: 12px;
+  color: var(--gray-color);
+}

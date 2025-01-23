@@ -57,7 +57,7 @@ export class ResultService {
     return this._resultsCount.value;
   }
 
-  addResult(lexemeId: string, isCorrect: boolean): void {
+  addResult(lexemeId: string, isCorrect: boolean, isHide: boolean): void {
     if (this.result.sourceLanguage === 'EN' && this.result.targetLanguage === 'EN') {
       this.errorService.show(['Selected languages match']);
       console.error(`Error adding ${this.result.sourceLanguage}: ${this.result.targetLanguage}`);
@@ -68,11 +68,13 @@ export class ResultService {
     if (existingResult) {
       existingResult.attempts++;
       if (isCorrect) existingResult.successfulAttempts++;
+      existingResult.isActive = !isHide;
     } else {
       const newResult: LexemeResultInterface = {
         lexemeId,
         attempts: 1,
-        successfulAttempts: isCorrect ? 1 : 0
+        successfulAttempts: isCorrect ? 1 : 0,
+        isActive: !isHide
       };
       results.push(newResult);
     }
@@ -89,7 +91,9 @@ export class ResultService {
 
   sendResult() {
     console.log("Sending result");
+
     if (this.result.resultDtos.length <= 0) return;
+    console.log(this.result.resultDtos);
     const request$ = this.http.post<LexemeInterface>(
       apiConstants.userResult,
       this.result,

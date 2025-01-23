@@ -1,6 +1,6 @@
-@let sourceLanguage=this.lexemes?.sourceLanguage;
-@let targetLanguage =this.lexemes?.targetLanguage;
-@let sourceWord =  this.getSourceWordMeaning();
+@let sourceLanguage = this.lexemes?.sourceLanguage;
+@let targetLanguage = this.lexemes?.targetLanguage;
+@let sourceWord = this.getSourceWordMeaning();
 
 <form
   action="" class="form form-flex"
@@ -8,12 +8,21 @@
   (ngSubmit)="onSubmit()">
   <h1 class="h1">Chose correct translation</h1>
   <div class="languages">
-    {{ sourceLanguage}}
+    {{ sourceLanguage }}
     <svg icon="arrow" class="arrow-icon"/>
-    {{targetLanguage }}
+    {{ targetLanguage }}
   </div>
-  <div class="source-word">
-    {{ sourceWord}}
+  <div>
+    <div class="source-word mb10">
+      {{ sourceWord }}
+    </div>
+    <label class="checkbox-label">
+      <input
+        type="checkbox"
+        formControlName="isHide"
+      />
+      <div class="checkbox-text"> Don't show this word again?</div>
+    </label>
   </div>
 
   <div class="radio-group">

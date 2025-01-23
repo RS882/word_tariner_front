@@ -39,7 +39,8 @@ export class TrainerPageComponent implements OnDestroy{
   private routerSubscription: Subscription;
 
   form: FormGroup = new FormGroup({
-    translation: new FormControl(null, [Validators.required])
+    translation: new FormControl(null, [Validators.required]),
+    isHide : new FormControl(false)
   })
 
   constructor() {
@@ -140,12 +141,14 @@ export class TrainerPageComponent implements OnDestroy{
   onSubmit() {
     if(this.form.valid){
     const value = this.form.value;
+    console.log(value)
     if (this.sourceWord) {
       const isSuccessful = this.getTargetMeaning(this.sourceWord) === value.translation;
 
       this.resultService.addResult(
         this.sourceWord.lexemeId,
-        isSuccessful);
+        isSuccessful,
+        value.isHide);
 
       this.trainerService.setCurrentWordStatus({
         word: this.getSourceWordMeaning(),
@@ -156,7 +159,10 @@ export class TrainerPageComponent implements OnDestroy{
     this.getNewRandomWord();
 
     this.resultService.showModal();
-    this.form.reset();
+    this.form.reset({
+      translation: null,
+      isHide: false,
+    });
     }else{
       this.errorService.show(['Сhoose your answer']);
     }
