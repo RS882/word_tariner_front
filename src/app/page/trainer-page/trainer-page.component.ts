@@ -22,14 +22,14 @@ import {SvgIconComponent} from "../../command-ui/svg-icon/svg-icon.component";
   templateUrl: './trainer-page.component.html',
   styleUrl: './trainer-page.component.scss'
 })
-export class TrainerPageComponent implements OnDestroy{
+export class TrainerPageComponent implements OnDestroy {
 
   lexemeService = inject(LexemeService);
   resultService = inject(ResultService);
   trainerService = inject(TrainerService);
   errorService = inject(ErrorService);
   router = inject(Router);
-  saveResult=inject(SaveResultService);
+  saveResult = inject(SaveResultService);
 
   lexemes: LexemeInterface | null = null;
   sourceWord: TranslationsInterface | null = null;
@@ -40,7 +40,7 @@ export class TrainerPageComponent implements OnDestroy{
 
   form: FormGroup = new FormGroup({
     translation: new FormControl(null, [Validators.required]),
-    isHide : new FormControl(false)
+    isHide: new FormControl(false)
   })
 
   constructor() {
@@ -54,7 +54,6 @@ export class TrainerPageComponent implements OnDestroy{
     this.routerSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.saveResult.showModal();
-        console.log('Data sent before navigating to:', event.url);
       }
     });
   }
@@ -72,7 +71,7 @@ export class TrainerPageComponent implements OnDestroy{
   }
 
   rearrangeString(text: string): string {
-    if(this.lexemes && this.lexemes.sourceLanguage==='DE') {
+    if (this.lexemes && this.lexemes.sourceLanguage === 'DE') {
       const parts = text.trim().split(/\s+/);
       if (parts.length > 1) {
         const lastPart = parts[parts.length - 1];
@@ -82,7 +81,7 @@ export class TrainerPageComponent implements OnDestroy{
         }
       }
       return parts.join(" ");
-    }else return text;
+    } else return text;
   }
 
   getTargetMeaning(translation: TranslationsInterface): string {
@@ -92,17 +91,17 @@ export class TrainerPageComponent implements OnDestroy{
     return meaning ? Object.values(meaning)[0] : '';
   }
 
-
   getRandomTranslationWithWeight(): TranslationsInterface | null {
-    if (!this.lexemes?.translations?.length) return null;
+    const lexemes = this.lexemes;
+    if (!lexemes?.translations?.length) return null;
 
     const totalWeight = this.weights.reduce((sum, weight) => sum + weight, 0);
     let random = Math.random() * totalWeight;
 
-    for (let i = 0; i < this.lexemes.translations.length; i++) {
+    for (let i = 0; i < lexemes.translations.length; i++) {
       random -= this.weights[i];
       if (random <= 0) {
-        return this.lexemes.translations[i];
+        return lexemes.translations[i];
       }
     }
     return null;
@@ -112,9 +111,10 @@ export class TrainerPageComponent implements OnDestroy{
     const lexemes = this.lexemes;
 
     if (!lexemes?.translations?.length) return [];
+
     if (!this.sourceWord) return [];
 
-    const sourceIndex = this.lexemes?.translations
+    const sourceIndex = lexemes.translations
       .findIndex(e => e === this.sourceWord);
 
     const indices = new Set<number>();
@@ -131,6 +131,9 @@ export class TrainerPageComponent implements OnDestroy{
 
   getNewRandomWord() {
     if (this.lexemes && this.lexemes.translations) {
+      if (this.lexemes.translations.length <= 0) {
+        this.router.navigate(['lexeme-load']);
+      }
       this.sourceWord = this.getRandomTranslationWithWeight();
       this.listOfTranslations = this.lexemes?.translations.length <= 5 ?
         this.lexemes.translations :
@@ -138,33 +141,46 @@ export class TrainerPageComponent implements OnDestroy{
     }
   }
 
-  onSubmit() {
-    if(this.form.valid){
-    const value = this.form.value;
-    console.log(value)
-    if (this.sourceWord) {
-      const isSuccessful = this.getTargetMeaning(this.sourceWord) === value.translation;
-
-      this.resultService.addResult(
-        this.sourceWord.lexemeId,
-        isSuccessful,
-        value.isHide);
-
-      this.trainerService.setCurrentWordStatus({
-        word: this.getSourceWordMeaning(),
-        translation: this.sourceWord ? this.getTargetMeaning(this.sourceWord) : '',
-        isSuccessful: isSuccessful
-      });
+  removeTranslationById(id: string): void {
+    if (!this.lexemes) return;
+    const indexToRemove = this.lexemes.translations
+      .findIndex(t => t.lexemeId === id);
+    if (indexToRemove !== -1) {
+      this.lexemes.translations.splice(indexToRemove, 1);
+      this.weights.splice(indexToRemove, 1);
     }
-    this.getNewRandomWord();
+  }
 
-    this.resultService.showModal();
-    this.form.reset({
-      translation: null,
-      isHide: false,
-    });
-    }else{
-      this.errorService.show(['Сhoose your answer']);
+  onSubmit() {
+
+    if (this.form.valid) {
+      const value = this.form.value;
+      if (this.sourceWord) {
+        const isSuccessful = this.getTargetMeaning(this.sourceWord) === value.translation;
+        const currentLemexeId = this.sourceWord.lexemeId;
+        this.resultService.addResult(
+          currentLemexeId,
+          isSuccessful,
+          value.isHide);
+
+        this.trainerService.setCurrentWordStatus({
+          word: this.getSourceWordMeaning(),
+          translation: this.sourceWord ? this.getTargetMeaning(this.sourceWord) : '',
+          isSuccessful: isSuccessful
+        });
+        if (value.isHide) {
+          this.removeTranslationById(currentLemexeId)
+        }
+      }
+      this.getNewRandomWord();
+
+      this.resultService.showModal();
+      this.form.reset({
+        translation: null,
+        isHide: false,
+      });
+    } else {
+      this.errorService.show(['Chose your answer']);
     }
   }
 

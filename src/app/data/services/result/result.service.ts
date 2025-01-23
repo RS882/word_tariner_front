@@ -34,6 +34,15 @@ export class ResultService {
     });
   }
 
+  private _ignoreLexemeId: string[] = [];
+  get ignoreLexemeId(): string[] {
+    return this._ignoreLexemeId;
+  };
+
+  set ignoreLexemeId(ignoreLexemeId: string) {
+    this._ignoreLexemeId.push(ignoreLexemeId);
+  }
+
   private _isSubmit = new BehaviorSubject<boolean>(false);
   submitStatus = this._isSubmit.asObservable();
 
@@ -63,6 +72,7 @@ export class ResultService {
       console.error(`Error adding ${this.result.sourceLanguage}: ${this.result.targetLanguage}`);
       return;
     }
+    this.ignoreLexemeId = lexemeId;
     const results: LexemeResultInterface[] = this.result.resultDtos;
     const existingResult = results.find(r => r.lexemeId === lexemeId);
     if (existingResult) {
