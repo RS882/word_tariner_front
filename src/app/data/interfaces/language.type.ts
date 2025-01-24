@@ -1,3 +1,6 @@
-export const LANGUAGES = ['EN', 'DE', 'UKR', 'RU'] as const;
-export type Language = typeof LANGUAGES[number];
-
+export enum Language {
+  EN = 'EN',
+  DE = 'DE',
+  UKR = 'UKR',
+  RU = 'RU',
+}

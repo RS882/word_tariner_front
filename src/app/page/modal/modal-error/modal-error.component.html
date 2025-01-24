@@ -1,5 +1,5 @@
-<div class="modal-backdrop" (click)="close()"></div>
-<div class="modal-window">
+<div class="modal-backdrop error" (click)="close()"></div>
+<div class="modal-window error-window">
   <h2 class="error-title">Errors:</h2>
   @for (errorMsg of messages; track getUUID()) {
     <p class ="error-messages ">{{ errorMsg }}</p>

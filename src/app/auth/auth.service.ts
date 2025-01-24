@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 import {ApiService} from "../api/api.service";
 import {CookieService} from "ngx-cookie-service";
 import {UserService} from "../data/services/user/user.service";
+import {Role} from "../data/interfaces/role.type";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class AuthService {
 
   private _accessToken: string = '';
   userId: number | null = null;
-  userRole: string[] | null = null;
+  userRole: Role[] | null = null;
   ACCESS_TOKEN: string = 'accessToken';
 
   private _isAuth = new BehaviorSubject<boolean>(false);

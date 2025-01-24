@@ -2,8 +2,8 @@
 @let word = this.currentWord.word;
 @let translation = this.currentWord.translation;
 
-<div class="modal-backdrop" (click)="close()"></div>
-<div class="modal-window">
+<div class="modal-backdrop result" (click)="close()"></div>
+<div class="modal-window result-window">
   <h2 [ngClass]="isSuccessful ? 'success-title' : 'error-title'">
     {{ isSuccessful ? 'Success' : 'Error' }}:</h2>
   <div class="result-message">

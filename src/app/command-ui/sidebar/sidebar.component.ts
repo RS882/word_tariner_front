@@ -8,6 +8,8 @@ import {ResultsCountInterface} from "../../data/interfaces/resultsCount.interfac
 import {UserService} from "../../data/services/user/user.service";
 import {UserInfoInterface} from "../../data/interfaces/userInfo.interface";
 import {SvgIconComponent} from "../svg-icon/svg-icon.component";
+import {Role} from "../../data/interfaces/role.type";
+
 
 @Component({
   selector: 'app-sidebar',
@@ -57,4 +59,6 @@ export class SidebarComponent {
   loadWordsClick() {
     this.router.navigate(['/lexeme-load']);
   }
+
+  protected readonly Role = Role;
 }

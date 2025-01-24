@@ -9,6 +9,7 @@ import {LexemeInterface} from "../../interfaces/lexeme.interface";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs";
 import {ResultsCountInterface} from "../../interfaces/resultsCount.interface";
+import {Language} from "../../interfaces/language.type";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ResultService {
   api = inject(ApiService);
   http = inject(HttpClient);
 
-  result: ResultInterface = {sourceLanguage: 'EN', targetLanguage: 'EN', resultDtos: []};
+  result: ResultInterface = {sourceLanguage: Language.EN, targetLanguage: Language.EN, resultDtos: []};
 
   constructor() {
     this.lexemeService.lexemesChanged.subscribe(lexemes => {
@@ -28,8 +29,8 @@ export class ResultService {
         this.result.sourceLanguage = lexemes.sourceLanguage;
         this.result.targetLanguage = lexemes.targetLanguage;
       } else {
-        this.result.sourceLanguage = 'EN';
-        this.result.targetLanguage = 'EN';
+        this.result.sourceLanguage = Language.EN;
+        this.result.targetLanguage = Language.EN;
       }
     });
   }
@@ -67,7 +68,7 @@ export class ResultService {
   }
 
   addResult(lexemeId: string, isCorrect: boolean, isHide: boolean): void {
-    if (this.result.sourceLanguage === 'EN' && this.result.targetLanguage === 'EN') {
+    if (this.result.sourceLanguage === Language.EN && this.result.targetLanguage === Language.EN) {
       this.errorService.show(['Selected languages match']);
       console.error(`Error adding ${this.result.sourceLanguage}: ${this.result.targetLanguage}`);
       return;

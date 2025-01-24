@@ -17,3 +17,7 @@
   <app-result-table [resultsCount]="count"/>
 }
 
+@if (me() && me()?.roles?.includes(Role.ADMIN)) {
+  <h2>ADMIN BOX :</h2>
+}
+

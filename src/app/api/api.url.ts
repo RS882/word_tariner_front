@@ -1,7 +1,7 @@
 const BASE_API_URL: string = 'http://localhost:8095/api/';
 const VERSION_PREFIX: string = 'v1/';
 const AUTH_PREFIX: string = 'auth/';
-const USER_PREFIX: string = 'user/';
+const USER_PREFIX: string = 'users/';
 
 
 const getFullUrl = (path: string, prefix: string = ''): string =>
@@ -19,8 +19,8 @@ export const apiConstants = {
 
   userRegistration: getUserUrl('registration'),
   userMe: getUserUrl('me'),
-  userResult: getUserUrl('lexeme/result'),
+  userResult: getUserUrl('lexeme-results'),
 
-  lexeme: getFullUrl('lexeme'),
+  lexeme: getFullUrl('lexemes'),
 }
 
