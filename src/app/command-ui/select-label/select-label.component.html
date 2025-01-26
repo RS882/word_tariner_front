@@ -1,0 +1,12 @@
+<label class="form-label select-label mb20"
+       [formGroup]="formGroup">
+  <h3>{{title}}</h3>
+  <select
+    [formControlName]="controlName" class="form-select">
+    @for (element of elements; ; track getUUID()) {
+      <option [value]="element" >
+        {{ element }}
+      </option>
+    }
+  </select>
+</label>

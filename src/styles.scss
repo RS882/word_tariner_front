@@ -117,6 +117,17 @@ button {
   color: var(--ligth-color);
 }
 
+.select-label{
+  display: flex;
+  gap: 10px;
+}
+
+.form-select{
+  border: var(--primary-color) solid 2px;
+  font-family: "JetBrains Mono", sans-serif;
+  font-weight: bold;
+}
+
 .modal-backdrop {
   position: fixed;
   top: 0;

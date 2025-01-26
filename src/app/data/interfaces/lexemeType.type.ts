@@ -1,1 +1,5 @@
-export type LexemeType = 'WORD' | 'PHRASE' | 'EXPRESSION';
+export enum LexemeType {
+  WORD= 'WORD',
+  PHRASE= 'PHRASE',
+  EXPRESSION= 'EXPRESSION'
+}

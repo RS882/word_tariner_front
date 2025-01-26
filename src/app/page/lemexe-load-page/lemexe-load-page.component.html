@@ -3,38 +3,26 @@
       (ngSubmit)="onSubmit()">
   <h1 class="h1 mb60">Chose load parameter</h1>
 
-  <label class="form-label select-label mb20">
-    <h3>Source language : </h3>
-    <select formControlName="sourceLanguage" class="form-select">
-      @for (language of languages; ; track getUUID()) {
-        <option [value]="language" >
-          {{ language }}
-        </option>
-      }
-    </select>
-  </label>
+  <app-select-label
+    [formGroup]="form"
+    controlName="sourceLanguage"
+    [elements]="languages"
+    title="Source language : "
+  />
 
-  <label class="form-label select-label mb20">
-    <h3>Target language : </h3>
-    <select formControlName="targetLanguage" class="form-select">
-      @for (language of languages; ; track getUUID()) {
-        <option [value]="language" >
-          {{ language }}
-        </option>
-      }
-    </select>
-  </label>
+  <app-select-label
+    [formGroup]="form"
+    controlName="targetLanguage"
+    [elements]="languages"
+    title="Target language : "
+  />
 
-  <label class="form-label select-label mb20">
-    <h3>Count of words : </h3>
-    <select formControlName="countOfWords" class="form-select">
-      @for (count of counts; ; track getUUID()) {
-        <option [value]="count" >
-          {{ count }}
-        </option>
-      }
-    </select>
-  </label>
+  <app-select-label
+    [formGroup]="form"
+    controlName="countOfWords"
+    [elements]="counts"
+    title="Count of words : "
+  />
 
   <button class="btn btn-shadow" type="submit">Load words</button>
 </form>

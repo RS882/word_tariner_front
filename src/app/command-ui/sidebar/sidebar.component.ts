@@ -9,6 +9,7 @@ import {UserService} from "../../data/services/user/user.service";
 import {UserInfoInterface} from "../../data/interfaces/userInfo.interface";
 import {SvgIconComponent} from "../svg-icon/svg-icon.component";
 import {Role} from "../../data/interfaces/role.type";
+import {AdminPanelPageComponent} from "../admin-panel-page/admin-panel-page.component";
 
 
 @Component({
@@ -16,7 +17,8 @@ import {Role} from "../../data/interfaces/role.type";
   standalone: true,
   imports: [
     ResultTableComponent,
-    SvgIconComponent
+    SvgIconComponent,
+    AdminPanelPageComponent
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
