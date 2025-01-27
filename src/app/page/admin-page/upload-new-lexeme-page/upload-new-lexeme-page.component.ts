@@ -9,6 +9,7 @@ import {FormFieldComponent} from "../../../command-ui/input-box/form-field/form-
 import {LexemeUploadInterface} from "../../../data/interfaces/lexemeUpload.interface";
 import {UploadLexemeService} from "../../../data/services/upload-lexeme/upload-lexeme.service";
 import {ErrorService} from "../../../data/services/error/error.service";
+import {MessageService} from "../../../data/services/message/message.service";
 
 @Component({
   selector: 'app-upload-new-lexeme-page',
@@ -43,13 +44,16 @@ export class UploadNewLexemePageComponent {
     if (this.form.valid) {
       const value = this.form.value;
       const payload: LexemeUploadInterface = {
-        sourceMeaning: value.sourceMeaning,
-        targetLanguage: value.targetMeaning,
+        sourceMeaning: value.sourceLexeme,
+        targetLanguage: value.targetLanguage,
         sourceLanguage: value.sourceLanguage,
-        targetMeaning: value.targetMeaning,
-        type: value.type,
+        targetMeaning: value.targetLexeme,
+        type: value.typeLexeme,
       }
+      console.log("New lexeme : ",payload);
       this.upload.uploadLexeme(payload);
+      this.form.reset();
+
     }else{
       this.errorService.show(['Selected languages match'])
     }

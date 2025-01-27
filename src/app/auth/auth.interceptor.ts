@@ -1,7 +1,7 @@
 import {HttpHandlerFn, HttpInterceptorFn, HttpRequest} from "@angular/common/http";
 import {inject} from "@angular/core";
 import {AuthService} from "./auth.service";
-import {catchError, EMPTY, switchMap, throwError} from "rxjs";
+import {catchError, switchMap, throwError} from "rxjs";
 import {ErrorService} from "../data/services/error/error.service";
 
 let isRefreshing = false;
@@ -18,13 +18,9 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   }
   return next(addToken(req, token))
     .pipe(
-      catchError(er => {
-        if (er.status === 403) {
-          return refreshTokens(authService, req, next)
-        }
-        errors.show(['Authorizations error'])
-        return EMPTY;
-      })
+      catchError(er => er.status === 403 ?
+        refreshTokens(authService, req, next) :
+        throwError(er))
     );
 }
 

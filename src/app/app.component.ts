@@ -12,11 +12,13 @@ import {SaveResultService} from "./data/services/save-result/save-result.service
 import {ModalSaveResultComponent} from "./page/modal/modal-save-result/modal-save-result/modal-save-result.component";
 import {AuthService} from "./auth/auth.service";
 import {CookieService} from "ngx-cookie-service";
+import {MessageService} from "./data/services/message/message.service";
+import {ModalMessageComponent} from "./page/modal/modal-message/modal-message.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ModalLoaderComponent, ModalErrorComponent, ModalResultComponent, ModalSaveResultComponent],
+  imports: [RouterOutlet, ModalLoaderComponent, ModalErrorComponent, ModalResultComponent, ModalSaveResultComponent, ModalMessageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -29,7 +31,9 @@ export class AppComponent implements OnInit {
   trainer = inject(TrainerService);
   saveResult = inject(SaveResultService);
   auth=inject(AuthService);
+  message = inject(MessageService);
   route=inject(Router);
+
 
   isLoading = signal<boolean>(false);
 
@@ -39,8 +43,11 @@ export class AppComponent implements OnInit {
 
   isUrlChanged = signal<boolean>(false);
 
+  isMessage = signal<boolean>(false);
+
   errorMessages: string[] = [];
   currentWord: CurrentWordInterface = {word: '', translation: '', isSuccessful: false};
+  messageText: string='';
 
   constructor() {
     this.loading.loadStatus.subscribe(isLoad => this.isLoading.set(isLoad));
@@ -51,6 +58,10 @@ export class AppComponent implements OnInit {
     this.result.submitStatus.subscribe(isSubmit => this.isResult.set(isSubmit));
     this.trainer.currentWordStatus.subscribe(word => this.currentWord = word);
     this.saveResult.urlChangedStatus.subscribe(isChange => this.isUrlChanged.set(isChange));
+    this.message.messageStatus.subscribe(msg=>{
+      this.isMessage.set(!!msg);
+      this.messageText = msg;
+    })
   }
 
   ngOnInit(): void {

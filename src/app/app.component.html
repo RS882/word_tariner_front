@@ -10,4 +10,7 @@
 @if(isUrlChanged()){
   <app-modal-save-result/>
 }
+@if(isMessage()){
+  <app-modal-message [message]="messageText"/>
+}
 <router-outlet></router-outlet>

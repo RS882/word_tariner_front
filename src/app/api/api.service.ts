@@ -20,7 +20,8 @@ export class ApiService {
   ): Observable<T> {
     this.loading.show();
     return request$.pipe(
-      tap(res => onSuccess(res)),
+      tap(res => onSuccess(res)
+      ),
       catchError(err => {
         if (onError) onError(err);
         this.errors.show(this.getErrorsMsgs(err))
@@ -33,9 +34,9 @@ export class ApiService {
     );
   }
 
-  private getErrorsMsgs(_err: any ): string[] {
-    if(!_err) return ['Some error occurred ...'];
-    if( _err?.error?.message) return [_err.error.message];
+  private getErrorsMsgs(_err: any): string[] {
+    if (!_err) return ['Some error occurred ...'];
+    if (_err?.error?.message) return [_err.error.message];
     if (_err?.error?.errors && Array.isArray(_err.error.errors)) {
       return _err.error.errors.map((e: { message: string }) => e.message);
     }
