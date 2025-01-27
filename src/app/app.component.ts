@@ -9,7 +9,7 @@ import {ModalResultComponent} from "./page/modal/modal-result/modal-result.compo
 import {TrainerService} from "./data/services/trainer/trainer.service";
 import {CurrentWordInterface} from "./data/interfaces/currentWord.interface";
 import {SaveResultService} from "./data/services/save-result/save-result.service";
-import {ModalSaveResultComponent} from "./page/modal/modal-save-result/modal-save-result/modal-save-result.component";
+import {ModalSaveResultComponent} from "./page/modal/modal-save-result/modal-save-result.component";
 import {AuthService} from "./auth/auth.service";
 import {CookieService} from "ngx-cookie-service";
 import {MessageService} from "./data/services/message/message.service";

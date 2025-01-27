@@ -13,7 +13,7 @@ import {LexemeService} from "../../data/services/lexeme/lexeme.service";
 import {ErrorService} from "../../data/services/error/error.service";
 import {getUUID} from "../../utilites/uuid.utilites";
 import {Language} from "../../data/interfaces/language.type";
-import {languageValidation} from "../../utilites/validators";
+import {getErrorsMessagesAfterValidation, languageValidation} from "../../utilites/validators";
 import {SelectLabelComponent} from "../../command-ui/select-label/select-label.component";
 
 @Component({
@@ -47,7 +47,7 @@ export class LemexeLoadPageComponent {
       const value = this.form.value;
       this.lexemeService.loadLexemes(value.sourceLanguage, value.targetLanguage, value.countOfWords)
     }else{
-      this.errorService.show(['Selected languages match'])
+      getErrorsMessagesAfterValidation(this.form.errors, this.errorService);
     }
   }
 }

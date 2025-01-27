@@ -1,1 +1,27 @@
-<p>upload-lexemes-file-page works!</p>
+<form action="" class="form"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()">
+  <h1 class="h1 mb60">Upload file with lexemes</h1>
+
+  <app-upload-file
+    [formGroup]="form"
+    controlName="files"/>
+
+  <app-select-label
+    [formGroup]="form"
+    controlName="sourceLanguage"
+    [elements]="languages"
+    title="Source language : "
+  />
+
+  <app-select-label
+    [formGroup]="form"
+    controlName="targetLanguage"
+    [elements]="languages"
+    title="Target language : "
+  />
+
+  <button class="btn btn-shadow" type="submit">Upload</button>
+</form>
+
+

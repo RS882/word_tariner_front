@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Language} from "../../../data/interfaces/language.type";
-import {languageValidation} from "../../../utilites/validators";
+import {getErrorsMessagesAfterValidation, languageValidation} from "../../../utilites/validators";
 import {SelectLabelComponent} from "../../../command-ui/select-label/select-label.component";
 import {LexemeType} from "../../../data/interfaces/lexemeType.type";
 import {FormFieldComponent} from "../../../command-ui/input-box/form-field/form-field.component";
@@ -55,7 +55,7 @@ export class UploadNewLexemePageComponent {
         targetLanguage: Language.DE || 'RU'
       });
     } else {
-      this.errorService.show(['Selected languages match'])
+      getErrorsMessagesAfterValidation(this.form.errors, this.errorService);
     }
   }
 }

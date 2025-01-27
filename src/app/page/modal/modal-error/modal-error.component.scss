@@ -8,6 +8,12 @@
   color: var(--red-color);
 }
 
+.error-messages {
+  font-weight: bold;
+  color: var(--dark-color);
+  overflow-wrap: anywhere;
+}
+
 .message{
   z-index: 1090;
 }

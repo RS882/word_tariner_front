@@ -1,0 +1,33 @@
+:host {
+  display: grid;
+  gap:20px;
+}
+.drop-zone {
+  border: 2px dashed var(--primary-color);
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  max-width: 500px;
+}
+
+.drop-zone.file-over {
+  background-color: var(--gray-color);
+  color: var(--dark-color);
+}
+
+.file-input {
+  display: none;
+}
+
+.file-list {
+  display: grid;
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+.file-item {
+  color: var(--green-color);
+  padding: 10px;
+}

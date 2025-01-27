@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
-import {SaveResultService} from "../../../../data/services/save-result/save-result.service";
-import {ResultService} from "../../../../data/services/result/result.service";
-import {LexemeService} from "../../../../data/services/lexeme/lexeme.service";
+import {SaveResultService} from "../../../data/services/save-result/save-result.service";
+import {ResultService} from "../../../data/services/result/result.service";
+import {LexemeService} from "../../../data/services/lexeme/lexeme.service";
 
 @Component({
   selector: 'app-modal-save-result',
