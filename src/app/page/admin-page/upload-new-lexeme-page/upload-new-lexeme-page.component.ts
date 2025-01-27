@@ -4,12 +4,10 @@ import {Language} from "../../../data/interfaces/language.type";
 import {languageValidation} from "../../../utilites/validators";
 import {SelectLabelComponent} from "../../../command-ui/select-label/select-label.component";
 import {LexemeType} from "../../../data/interfaces/lexemeType.type";
-import {TextBoxComponent} from "../../../command-ui/input-box/text-box/text-box.component";
 import {FormFieldComponent} from "../../../command-ui/input-box/form-field/form-field.component";
 import {LexemeUploadInterface} from "../../../data/interfaces/lexemeUpload.interface";
 import {UploadLexemeService} from "../../../data/services/upload-lexeme/upload-lexeme.service";
 import {ErrorService} from "../../../data/services/error/error.service";
-import {MessageService} from "../../../data/services/message/message.service";
 
 @Component({
   selector: 'app-upload-new-lexeme-page',
@@ -17,7 +15,6 @@ import {MessageService} from "../../../data/services/message/message.service";
   imports: [
     ReactiveFormsModule,
     SelectLabelComponent,
-    TextBoxComponent,
     FormFieldComponent
   ],
   templateUrl: './upload-new-lexeme-page.component.html',
@@ -25,8 +22,8 @@ import {MessageService} from "../../../data/services/message/message.service";
 })
 export class UploadNewLexemePageComponent {
 
-  upload=inject(UploadLexemeService);
-  errorService=inject(ErrorService);
+  upload = inject(UploadLexemeService);
+  errorService = inject(ErrorService);
 
   languages = Object.values(Language);
   types = Object.values(LexemeType);
@@ -36,9 +33,8 @@ export class UploadNewLexemePageComponent {
     targetLexeme: new FormControl('', [Validators.required]),
     typeLexeme: new FormControl(LexemeType.WORD, [Validators.required]),
     sourceLanguage: new FormControl(Language.EN || 'EN', [Validators.required]),
-    targetLanguage: new FormControl(Language.DE || 'RU', [Validators.required]),
+    targetLanguage: new FormControl(Language.DE || 'RU', [Validators.required])
   }, {validators: languageValidation('sourceLanguage', 'targetLanguage')})
-
 
   onSubmit() {
     if (this.form.valid) {
@@ -50,13 +46,16 @@ export class UploadNewLexemePageComponent {
         targetMeaning: value.targetLexeme,
         type: value.typeLexeme,
       }
-      console.log("New lexeme : ",payload);
       this.upload.uploadLexeme(payload);
-      this.form.reset();
-
-    }else{
+      this.form.reset({
+        sourceLexeme: '',
+        targetLexeme: '',
+        typeLexeme: LexemeType.WORD,
+        sourceLanguage: Language.EN || 'EN',
+        targetLanguage: Language.DE || 'RU'
+      });
+    } else {
       this.errorService.show(['Selected languages match'])
     }
   }
-
 }
