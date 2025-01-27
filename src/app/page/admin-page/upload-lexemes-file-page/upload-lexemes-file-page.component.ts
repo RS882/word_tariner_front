@@ -50,7 +50,13 @@ export class UploadLexemesFilePageComponent {
       });
       this.uploadFileComponent.clearFiles();
     } else {
-      getErrorsMessagesAfterValidation(this.form.errors, this.errorService);
+      const fieldsErrors = this.form.get('files')?.hasError('required') ?
+        ['Files are required'] : undefined;
+      if (this.form.errors) {
+        getErrorsMessagesAfterValidation(this.form.errors, this.errorService, fieldsErrors);
+      } else if (!!fieldsErrors) {
+        this.errorService.show(fieldsErrors);
+      }
     }
   }
 }

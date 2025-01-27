@@ -1,5 +1,4 @@
 import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {inject} from "@angular/core";
 import {ErrorService} from "../data/services/error/error.service";
 
 export const languageValidation =
@@ -29,10 +28,13 @@ export const fileValidation = (filesField: string): ValidatorFn => {
   };
 }
 
-export const getErrorsMessagesAfterValidation=
-  (errors:ValidationErrors|null, errorService: ErrorService)=>{
-  if (errors) {
-    const errorMessage: string[] = Object.values(errors);
-    errorService.show(errorMessage);
+export const getErrorsMessagesAfterValidation =
+  (errors: ValidationErrors | null, errorService: ErrorService, otherErrorsMessages?: string[]) => {
+    if (errors) {
+      const errorMessage: string[] = Object.values(errors);
+      if (otherErrorsMessages && otherErrorsMessages.length > 0) {
+        errorMessage.push(...otherErrorsMessages);
+      }
+      errorService.show(errorMessage);
+    }
   }
-}
