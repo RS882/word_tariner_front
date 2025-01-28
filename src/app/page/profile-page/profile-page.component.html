@@ -1,0 +1,44 @@
+<form action="" class="form"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()">
+  <h1 class="h1 mb60">User information</h1>
+
+  <app-form-field
+    [form]="form"
+    controlName="name"
+    labelText="Name"
+    [infoText]="isChangeDisabled() ? undefined : 'Username must be between 3 and 20 characters'"
+  />
+
+  <app-form-field
+    [form]="form"
+    controlName="email"
+    labelText="Email"
+  />
+  @if (!isChangeDisabled()) {
+    <app-form-field
+      [form]="form"
+      controlName="password"
+      labelText="New password"
+      [infoText]="isChangeDisabled() ? undefined :'Password should include at least one letter' +
+       ' (A-Z or a-z), one digit (0-9), one special character (@, #, $, %, ^, &, +, =, !),' +
+        ' have no spaces,no less than 8 characters and no more than 20'"
+    />
+
+    <app-form-field
+      [form]="form"
+      controlName="repeatPassword"
+      labelText="Re-enter new password"
+    />
+  }
+
+  @if (isChangeDisabled()) {
+    <button class="btn btn-shadow" type="button" (click)="changeInfoClick()">Change user information</button>
+     } @else {
+    <div class="two-btn-block">
+      <button class="btn btn-shadow" type="submit">Update</button>
+      <button class="btn btn-shadow" type="button" (click)="cancelUpdate()">Cancel</button>
+    </div>
+
+  }
+</form>

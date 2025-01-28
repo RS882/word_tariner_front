@@ -14,6 +14,7 @@ import {FormFieldComponent} from "../../command-ui/input-box/form-field/form-fie
 import {UserService} from "../../data/services/user/user.service";
 import {UserRegistrationInterface} from "../../data/interfaces/userRegistration.interface";
 import {AuthService} from "../../auth/auth.service";
+import {passwordsMatchValidator} from "../../utilites/validators";
 
 @Component({
   selector: 'app-registration-page',
@@ -45,18 +46,7 @@ export class RegistrationPageComponent {
         Validators.pattern(`^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$`)]),
     repeatPassword: new FormControl(null,
       [Validators.required])
-  }, {validators: this.passwordsMatchValidator('password', 'repeatPassword')});
-
-  passwordsMatchValidator(passwordField: string, repeatPasswordField: string): ValidatorFn {
-    return (form: AbstractControl): ValidationErrors | null => {
-      const password = form.get(passwordField)?.value;
-      const repeatPassword = form.get(repeatPasswordField)?.value;
-      if (password && repeatPassword && password !== repeatPassword) {
-        return {passwordsMismatch: true};
-      }
-      return null;
-    };
-  }
+  }, {validators: passwordsMatchValidator('password', 'repeatPassword')});
 
   onSubmit() {
     if (this.form.valid) {

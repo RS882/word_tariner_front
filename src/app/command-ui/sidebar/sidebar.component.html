@@ -3,6 +3,7 @@
     <svg icon="user" class="user-icon"/>
     <div class="user-box_text user-name">{{ me()?.userName }}</div>
   </div>
+  <button class="btn btn-shadow sidebar-btn" (click)="viesProfileClick()">View Profile</button>
 }
 
 @if (isAuthenticated()) {

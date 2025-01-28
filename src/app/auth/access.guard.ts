@@ -6,7 +6,6 @@ import {UserService} from "../data/services/user/user.service";
 import {Role} from "../data/interfaces/role.type";
 
 export const canActivateAuth = (): boolean | UrlTree => {
-  console.log('Auth guard');
   const authService = inject(AuthService);
   const router = inject(Router);
   if (authService.isAuth) {
@@ -22,13 +21,11 @@ export const canActivateAuth = (): boolean | UrlTree => {
 export const canLexemesLoaded = (): boolean | UrlTree => {
   const isLoaded: boolean = inject(LexemeService).isLexemesLoaded;
   const router = inject(Router);
-  console.log('Lexeme load guard');
   return isLoaded || router.createUrlTree(['/lexeme-load'])
 }
 
 export const canAdminRole = (): boolean | UrlTree => {
   const userRoles = inject(UserService).me?.roles;
   const router = inject(Router);
-  console.log('Admin role guard');
   return userRoles && userRoles.includes(Role.ADMIN) ||  router.createUrlTree(['/login'])
 }

@@ -1,17 +1,8 @@
 import {Component, inject} from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators
-} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 import {LexemeService} from "../../data/services/lexeme/lexeme.service";
 import {ErrorService} from "../../data/services/error/error.service";
-import {getUUID} from "../../utilites/uuid.utilites";
 import {Language} from "../../data/interfaces/language.type";
 import {getErrorsMessagesAfterValidation, languageValidation} from "../../utilites/validators";
 import {SelectLabelComponent} from "../../command-ui/select-label/select-label.component";
@@ -29,7 +20,7 @@ import {SelectLabelComponent} from "../../command-ui/select-label/select-label.c
 export class LemexeLoadPageComponent {
 
   lexemeService = inject(LexemeService);
-  errorService=inject(ErrorService);
+  errorService = inject(ErrorService);
 
   languages = Object.values(Language);
 
@@ -46,7 +37,7 @@ export class LemexeLoadPageComponent {
     if (this.form.valid) {
       const value = this.form.value;
       this.lexemeService.loadLexemes(value.sourceLanguage, value.targetLanguage, value.countOfWords)
-    }else{
+    } else {
       getErrorsMessagesAfterValidation(this.form.errors, this.errorService);
     }
   }

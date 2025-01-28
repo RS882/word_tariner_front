@@ -7,7 +7,6 @@ import {ErrorService} from "../data/services/error/error.service";
 let isRefreshing = false;
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log('Interceptor triggered');
   const authService = inject(AuthService);
   const errors = inject(ErrorService);
   const token = authService.accessToken;
@@ -42,7 +41,6 @@ const refreshTokens = (
 }
 
 const addToken = (req: HttpRequest<any>, token: string): HttpRequest<any> => {
-  console.log('Adding token to request');
   return req.clone({
     setHeaders: {
       Authorization: `Bearer ${token}`

@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {LexemeService} from "../../data/services/lexeme/lexeme.service";
@@ -10,6 +10,8 @@ import {UserInfoInterface} from "../../data/interfaces/userInfo.interface";
 import {SvgIconComponent} from "../svg-icon/svg-icon.component";
 import {Role} from "../../data/interfaces/role.type";
 import {AdminPanelPageComponent} from "../admin-panel-page/admin-panel-page.component";
+import {UploadFileComponent} from "../upload-file/upload-file.component";
+import {ProfilePageComponent} from "../../page/profile-page/profile-page.component";
 
 
 @Component({
@@ -60,6 +62,10 @@ export class SidebarComponent {
 
   loadWordsClick() {
     this.router.navigate(['/lexeme-load']);
+  }
+
+  viesProfileClick() {
+    this.router.navigate(['/profile']);
   }
 
   protected readonly Role = Role;

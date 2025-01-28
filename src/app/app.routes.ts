@@ -10,6 +10,7 @@ import {UploadNewLexemePageComponent} from "./page/admin-page/upload-new-lexeme-
 import {
   UploadLexemesFilePageComponent
 } from "./page/admin-page/upload-lexemes-file-page/upload-lexemes-file-page.component";
+import {ProfilePageComponent} from "./page/profile-page/profile-page.component";
 
 export const routes: Routes = [
   {
@@ -27,6 +28,11 @@ export const routes: Routes = [
       {
         path: 'lexeme-load',
         component: LemexeLoadPageComponent,
+        canActivate: [canActivateAuth]
+      },
+      {
+        path: 'profile',
+        component: ProfilePageComponent,
         canActivate: [canActivateAuth]
       },
       {

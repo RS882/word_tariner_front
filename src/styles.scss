@@ -166,3 +166,10 @@ button {
   width: 24px;
   height: 24px;
 }
+
+.two-btn-block{
+  max-width: 500px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}

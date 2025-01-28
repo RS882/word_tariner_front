@@ -28,6 +28,18 @@ export const fileValidation = (filesField: string): ValidatorFn => {
   };
 }
 
+export const passwordsMatchValidator = (passwordField: string, repeatPasswordField: string): ValidatorFn => {
+  return (form: AbstractControl): ValidationErrors | null => {
+    const password = form.get(passwordField)?.value;
+    const repeatPassword = form.get(repeatPasswordField)?.value;
+    if (password && repeatPassword && password !== repeatPassword) {
+      return {passwordsMismatch: true};
+    }
+    return null;
+  };
+}
+
+
 export const getErrorsMessagesAfterValidation =
   (errors: ValidationErrors | null, errorService: ErrorService, otherErrorsMessages?: string[]) => {
     if (errors) {

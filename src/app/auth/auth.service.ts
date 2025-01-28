@@ -105,7 +105,7 @@ export class AuthService {
   }
 
   saveLoginInfo(res: AuthInterface) {
-    console.log(res);
+    console.log('User authorized with ID : ',  res.userId)
     this.accessToken = res.accessToken;
     this.saveAccessToken(res.accessToken);
     this.user.getMe();
@@ -114,7 +114,7 @@ export class AuthService {
 
   saveValidateInfo(res: ValidationInfoInterface) {
     if (res.isAuthorized) {
-      console.log(res)
+      console.log('User validation with ID : ',  res.userId,' and Role : ', res.roles)
       this.userRole = res.roles;
       this.userId = res.userId;
       this.user.getMe();
