@@ -14,7 +14,10 @@ import {FormFieldComponent} from "../../command-ui/input-box/form-field/form-fie
 import {UserService} from "../../data/services/user/user.service";
 import {UserRegistrationInterface} from "../../data/interfaces/userRegistration.interface";
 import {AuthService} from "../../auth/auth.service";
-import {passwordsMatchValidator} from "../../utilites/validators";
+import {getErrorsMessagesAfterValidation, passwordsMatchValidator} from "../../utilites/validators";
+import {ErrorService} from "../../data/services/error/error.service";
+import {throwError} from "rxjs";
+
 
 @Component({
   selector: 'app-registration-page',
@@ -30,6 +33,7 @@ import {passwordsMatchValidator} from "../../utilites/validators";
 export class RegistrationPageComponent {
   userService: UserService = inject(UserService);
   auth: AuthService = inject(AuthService);
+  errorService = inject(ErrorService);
 
   router = inject(Router);
 
@@ -67,16 +71,18 @@ export class RegistrationPageComponent {
                   this.router.navigate(['lexeme-load']);
                 },
                 error: (err) => {
+                  throwError(err);
                   console.error('Login failed:', err);
                 }
               });
           },
           error: (err) => {
+            throwError(err);
             console.error('Registration failed:', err);
           }
         });
     } else {
-      console.error('Incorrect registration data');
+      getErrorsMessagesAfterValidation(this.form.errors, this.errorService)
     }
   }
 }

@@ -11,6 +11,7 @@ import {
   UploadLexemesFilePageComponent
 } from "./page/admin-page/upload-lexemes-file-page/upload-lexemes-file-page.component";
 import {ProfilePageComponent} from "./page/profile-page/profile-page.component";
+import {FormBoxComponent} from "./command-ui/form-box/form-box.component";
 
 export const routes: Routes = [
   {
@@ -21,6 +22,7 @@ export const routes: Routes = [
         path: '',
         component: FormLayoutComponent,
         children: [
+          {path: '', component:FormBoxComponent},
           {path: 'login', component: LoginPageComponent},
           {path: 'registration', component: RegistrationPageComponent},
         ]

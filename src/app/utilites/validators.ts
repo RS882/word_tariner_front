@@ -32,13 +32,13 @@ export const passwordsMatchValidator = (passwordField: string, repeatPasswordFie
   return (form: AbstractControl): ValidationErrors | null => {
     const password = form.get(passwordField)?.value;
     const repeatPassword = form.get(repeatPasswordField)?.value;
-    if (password && repeatPassword && password !== repeatPassword) {
-      return {passwordsMismatch: true};
+
+    if ( password !== repeatPassword) {
+      return {passwordsMismatch: 'Passwords do not match'};
     }
     return null;
   };
 }
-
 
 export const getErrorsMessagesAfterValidation =
   (errors: ValidationErrors | null, errorService: ErrorService, otherErrorsMessages?: string[]) => {

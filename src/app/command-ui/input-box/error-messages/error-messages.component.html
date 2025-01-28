@@ -1,7 +1,7 @@
 @if (hasError && validateResults){
   <div class="error-messages">
     @for (errorMessage of errorMessages; track getUUID()){
-      <small>{{ errorMessage }}</small>
+      <small class="messages-text">{{ errorMessage }}</small>
     }
   </div>
 }

@@ -3,9 +3,12 @@ import {UserService} from "../../data/services/user/user.service";
 import {UserInfoInterface} from "../../data/interfaces/userInfo.interface";
 import {FormFieldComponent} from "../../command-ui/input-box/form-field/form-field.component";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {passwordsMatchValidator} from "../../utilites/validators";
+import {getErrorsMessagesAfterValidation, passwordsMatchValidator} from "../../utilites/validators";
 import {Subscription} from "rxjs";
 import {NavigationStart, Router} from "@angular/router";
+import {UserRegistrationInterface} from "../../data/interfaces/userRegistration.interface";
+import {UserUpdateInterface} from "../../data/interfaces/userUpdate.interface";
+import {ErrorService} from "../../data/services/error/error.service";
 
 @Component({
   selector: 'app-profile-page',
@@ -20,7 +23,8 @@ import {NavigationStart, Router} from "@angular/router";
 })
 export class ProfilePageComponent {
   userService = inject(UserService);
-  router= inject(Router);
+  router = inject(Router);
+  errorService = inject(ErrorService);
 
   userInfo: UserInfoInterface | null = null;
   private routerSubscription: Subscription;
@@ -34,10 +38,8 @@ export class ProfilePageComponent {
       [Validators.required,
         Validators.email]),
     password: new FormControl(null,
-      [Validators.required,
-        Validators.pattern(`^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$`)]),
-    repeatPassword: new FormControl(null,
-      [Validators.required])
+      [Validators.pattern(`^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$`)]),
+    repeatPassword: new FormControl(null)
   }, {validators: passwordsMatchValidator('password', 'repeatPassword')});
 
   isChangeDisabled = signal<boolean>(true);
@@ -82,7 +84,16 @@ export class ProfilePageComponent {
 
   onSubmit() {
     if (this.form.valid) {
+      const value = this.form.value;
 
+      const updatedUserInfo: UserUpdateInterface = {
+        ...(value.name !== this.userInfo?.userName && value.name ? { userName: value.name } : {}),
+        ...(value.password ? { password: value.password } : {}),
+        ...(value.email !== this.userInfo?.email && value.email ? { email: value.email } : {}),
+      };
+      console.log('Update info : ', updatedUserInfo);
+    }else{
+      getErrorsMessagesAfterValidation(this.form.errors, this.errorService)
     }
   }
 }

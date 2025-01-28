@@ -58,7 +58,6 @@ export class UploadLexemesFilePageComponent {
         throwError(error)
       }
 
-
       this.form.reset({
         files: [],
         sourceLanguage: Language.EN || 'EN',
