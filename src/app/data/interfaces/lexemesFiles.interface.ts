@@ -1,6 +1,6 @@
 import {Language} from "./language.type";
 
-export interface LexemesFileUploadInterface{
+export interface LexemesFilesInterface {
   files: File[];
   sourceLanguage: Language,
   targetLanguage: Language,

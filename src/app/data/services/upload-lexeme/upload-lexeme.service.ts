@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {ApiService} from "../../../api/api.service";
 import {ResponseMessageInterface} from "../../interfaces/responseMessage.interface";
 import {MessageService} from "../message/message.service";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +18,39 @@ export class UploadLexemeService {
 
   uploadLexeme(payload: LexemeUploadInterface) {
     const request$ = this.http.post<ResponseMessageInterface>(
-      apiConstants.lexeme, payload,
+      apiConstants.lexeme,
+      payload,
       {withCredentials: true});
     return this.apiService.handleRequest(
       request$,
       res => {
         this.messageService.show(res.message)
-
       }
     ).subscribe();
+  }
+
+  uploadFile(payload: FormData) {
+    const request$ = this.http.post<ResponseMessageInterface>(
+      apiConstants.lexemeFile,
+      payload,
+      {withCredentials: true}
+    );
+    return this.apiService.handleRequest(
+      request$,
+      res => {
+        this.messageService.show(res.message)
+      }
+    );
+  }
+
+  waitForModalClose(): Observable<boolean> {
+    return new Observable((observer) => {
+      this.messageService.messageStatus.subscribe(msg => {
+        if (!msg) {
+          observer.next(true);
+          observer.complete();
+        }
+      });
+    });
   }
 }

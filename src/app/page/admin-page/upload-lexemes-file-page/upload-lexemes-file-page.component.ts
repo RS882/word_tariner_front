@@ -6,7 +6,8 @@ import {ErrorService} from "../../../data/services/error/error.service";
 import {Language} from "../../../data/interfaces/language.type";
 import {fileValidation, getErrorsMessagesAfterValidation, languageValidation} from "../../../utilites/validators";
 import {UploadFileComponent} from "../../../command-ui/upload-file/upload-file.component";
-import {LexemesFileUploadInterface} from "../../../data/interfaces/lexemesFileUpload.interface";
+import {LexemesFilesInterface} from "../../../data/interfaces/lexemesFiles.interface";
+import {lastValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-upload-lexemes-file-page',
@@ -27,6 +28,7 @@ export class UploadLexemesFilePageComponent {
   upload = inject(UploadLexemeService);
   errorService = inject(ErrorService);
 
+
   languages = Object.values(Language);
 
   form: FormGroup = new FormGroup({
@@ -39,10 +41,20 @@ export class UploadLexemesFilePageComponent {
       fileValidation('files')]
   })
 
-  onSubmit() {
+  async onSubmit() {
     if (this.form.valid) {
-      const payload: LexemesFileUploadInterface = this.form.value;
-      console.log(payload);
+      const value: LexemesFilesInterface = this.form.value;
+      const fd = new FormData();
+      fd.append('sourceLanguage', value.sourceLanguage);
+      fd.append('targetLanguage', value.targetLanguage);
+
+      for (const file of value.files) {
+        fd.append('file', file);
+        await lastValueFrom(this.upload.waitForModalClose());
+        await lastValueFrom(this.upload.uploadFile(fd))
+        fd.delete('file');
+      }
+
       this.form.reset({
         files: [],
         sourceLanguage: Language.EN || 'EN',
