@@ -3,11 +3,11 @@
       (ngSubmit)="onSubmit()">
   <h1 class="h1 mb60">Upload new lexeme</h1>
 
-    <app-form-field
-      labelText="Source lexeme : "
-      controlName="sourceLexeme"
-      [form]="form"
-    />
+  <app-form-field
+    labelText="Source lexeme : "
+    controlName="sourceLexeme"
+    [form]="form"
+  />
 
   <app-form-field
     labelText="Target lexeme : "
@@ -15,27 +15,27 @@
     [form]="form"
   />
 
-    <app-select-label
-      [formGroup]="form"
-      controlName="typeLexeme"
-      [elements]="types"
-      title="Type of lexeme : "
-    />
+  <app-select-label
+    [formGroup]="form"
+    controlName="typeLexeme"
+    [elements]="types"
+    title="Type of lexeme : "
+  />
 
-    <app-select-label
-      [formGroup]="form"
-      controlName="sourceLanguage"
-      [elements]="languages"
-      title="Source language : "
-    />
+  <app-select-label
+    [formGroup]="form"
+    controlName="sourceLanguage"
+    [elements]="languages"
+    title="Source language : "
+  />
 
-    <app-select-label
-      [formGroup]="form"
-      controlName="targetLanguage"
-      [elements]="languages"
-      title="Target language : "
-    />
+  <app-select-label
+    [formGroup]="form"
+    controlName="targetLanguage"
+    [elements]="languages"
+    title="Target language : "
+  />
 
-    <button class="btn btn-shadow" type="submit">Upload</button>
+  <button class="btn btn-shadow" type="submit">Upload</button>
 </form>
 

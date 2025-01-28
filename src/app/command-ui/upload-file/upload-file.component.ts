@@ -2,13 +2,16 @@ import {Component, Input} from '@angular/core';
 import {DragDropDirective} from "../../directives/darg-drop/drag-drop.directive";
 import {getUUID} from "../../utilites/uuid.utilites";
 import {FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {SvgIconComponent} from "../svg-icon/svg-icon.component";
+
 
 @Component({
   selector: 'app-upload-file',
   standalone: true,
   imports: [
     DragDropDirective,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SvgIconComponent
   ],
   templateUrl: './upload-file.component.html',
   styleUrl: './upload-file.component.scss'
@@ -19,6 +22,7 @@ export class UploadFileComponent {
   @Input() controlName: string = '';
 
   files: File[] = [];
+  activeFileIndex: number | null = null;
 
   onFileDropped(files: FileList) {
     this.addFiles(files);
@@ -46,6 +50,14 @@ export class UploadFileComponent {
     this._setControlValue();
   }
 
+  deleteFile(file: File) {
+    const initialLength = this.files.length;
+    this.files = this.files.filter(f => f.name !== file.name);
+    if (initialLength > this.files.length) {
+      this._setControlValue();
+    }
+  }
+
   private _setControlValue() {
     if (this.controlName && this.formGroup.controls[this.controlName]) {
       this.formGroup.controls[this.controlName].setValue(this.files);
@@ -54,4 +66,5 @@ export class UploadFileComponent {
   }
 
   protected readonly getUUID = getUUID;
+
 }

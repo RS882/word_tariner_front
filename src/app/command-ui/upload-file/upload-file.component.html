@@ -3,7 +3,7 @@
   appDragDrop
   (fileDropped)="onFileDropped($event)"
   (click)="fileInput.click()"
-  >
+>
   <p>Drag files here or click to select</p>
   <input
     type="file"
@@ -14,8 +14,13 @@
   />
 </div>
 <ul class="file-list">
-  @for( file of files; track getUUID()){
-    <li class="file-item">{{ file.name }}</li>
+  @for (file of files; track getUUID()) {
+    <li class="file-item">
+      <div class="file-name">{{ file.name }}</div>
+      <button class="bin-btn" type="button" (click)="deleteFile(file)">
+        <svg icon="bin" class="bin-icon"/>
+      </button>
+    </li>
   }
 </ul>
 
