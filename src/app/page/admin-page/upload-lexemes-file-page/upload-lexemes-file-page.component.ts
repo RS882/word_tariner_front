@@ -7,7 +7,7 @@ import {Language} from "../../../data/interfaces/language.type";
 import {fileValidation, getErrorsMessagesAfterValidation, languageValidation} from "../../../utilites/validators";
 import {UploadFileComponent} from "../../../command-ui/upload-file/upload-file.component";
 import {LexemesFilesInterface} from "../../../data/interfaces/lexemesFiles.interface";
-import {lastValueFrom} from "rxjs";
+import {lastValueFrom, throwError} from "rxjs";
 
 @Component({
   selector: 'app-upload-lexemes-file-page',
@@ -47,13 +47,17 @@ export class UploadLexemesFilePageComponent {
       const fd = new FormData();
       fd.append('sourceLanguage', value.sourceLanguage);
       fd.append('targetLanguage', value.targetLanguage);
-
-      for (const file of value.files) {
-        fd.append('file', file);
-        await lastValueFrom(this.upload.waitForModalClose());
-        await lastValueFrom(this.upload.uploadFile(fd))
-        fd.delete('file');
+      try {
+        for (const file of value.files) {
+          fd.append('file', file);
+          await lastValueFrom(this.upload.waitForModalClose());
+          await lastValueFrom(this.upload.uploadFile(fd))
+          fd.delete('file');
+        }
+      } catch (error) {
+        throwError(error)
       }
+
 
       this.form.reset({
         files: [],

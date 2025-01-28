@@ -39,6 +39,7 @@ export class UploadLexemeService {
       request$,
       res => {
         this.messageService.show(res.message)
+        return res;
       }
     );
   }
