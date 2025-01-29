@@ -9,6 +9,7 @@ import {NavigationStart, Router} from "@angular/router";
 import {UserRegistrationInterface} from "../../data/interfaces/userRegistration.interface";
 import {UserUpdateInterface} from "../../data/interfaces/userUpdate.interface";
 import {ErrorService} from "../../data/services/error/error.service";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-profile-page',
@@ -25,6 +26,7 @@ export class ProfilePageComponent {
   userService = inject(UserService);
   router = inject(Router);
   errorService = inject(ErrorService);
+  auth = inject(AuthService);
 
   userInfo: UserInfoInterface | null = null;
   private routerSubscription: Subscription;
@@ -91,7 +93,9 @@ export class ProfilePageComponent {
         ...(value.password ? { password: value.password } : {}),
         ...(value.email !== this.userInfo?.email && value.email ? { email: value.email } : {}),
       };
-      console.log('Update info : ', updatedUserInfo);
+
+      this.userService.updateUserInfo(updatedUserInfo);
+      this.auth.logout();
     }else{
       getErrorsMessagesAfterValidation(this.form.errors, this.errorService)
     }

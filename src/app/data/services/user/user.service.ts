@@ -5,6 +5,8 @@ import {UserInfoInterface} from "../../interfaces/userInfo.interface";
 import {apiConstants} from "../../../api/api.url";
 import {ApiService} from "../../../api/api.service";
 import {BehaviorSubject} from "rxjs";
+import {UserUpdateInterface} from "../../interfaces/userUpdate.interface";
+import {MessageService} from "../message/message.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,7 @@ export class UserService {
 
   http = inject(HttpClient);
   apiService = inject(ApiService);
+  messageService = inject(MessageService);
 
   registration(payload: UserRegistrationInterface) {
     const request$ = this.http.post<UserInfoInterface>(
@@ -47,6 +50,20 @@ export class UserService {
       request$,
       res => {
         this.saveUserInfo(res);
+      }
+    ).subscribe();
+  }
+
+  updateUserInfo(payload: UserUpdateInterface) {
+    const request$ = this.http.put<UserInfoInterface>(
+      apiConstants.userMe,
+      payload,
+      {withCredentials: true});
+    return this.apiService.handleRequest(
+      request$,
+      res => {
+        this.messageService.show(`User ${res.userName} updated successfully. You need to log in again`);
+
       }
     ).subscribe();
   }
