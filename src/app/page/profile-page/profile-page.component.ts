@@ -4,9 +4,8 @@ import {UserInfoInterface} from "../../data/interfaces/userInfo.interface";
 import {FormFieldComponent} from "../../command-ui/input-box/form-field/form-field.component";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {getErrorsMessagesAfterValidation, passwordsMatchValidator} from "../../utilites/validators";
-import {Subscription} from "rxjs";
+import {catchError, EMPTY, Subscription, tap} from "rxjs";
 import {NavigationStart, Router} from "@angular/router";
-import {UserRegistrationInterface} from "../../data/interfaces/userRegistration.interface";
 import {UserUpdateInterface} from "../../data/interfaces/userUpdate.interface";
 import {ErrorService} from "../../data/services/error/error.service";
 import {AuthService} from "../../auth/auth.service";
@@ -33,16 +32,15 @@ export class ProfilePageComponent {
 
   form: FormGroup = new FormGroup({
     name: new FormControl({value: '', disabled: true},
-      [Validators.required,
-        Validators.maxLength(20),
+      [Validators.maxLength(20),
         Validators.minLength(3)]),
     email: new FormControl({value: '', disabled: true},
-      [Validators.required,
-        Validators.email]),
-    password: new FormControl(null,
+      [Validators.email]),
+    currentPassword: new FormControl(null,[Validators.required]),
+    newPassword: new FormControl(null,
       [Validators.pattern(`^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$`)]),
-    repeatPassword: new FormControl(null)
-  }, {validators: passwordsMatchValidator('password', 'repeatPassword')});
+    repeatNewPassword: new FormControl(null)
+  }, {validators: passwordsMatchValidator('newPassword', 'repeatNewPassword')});
 
   isChangeDisabled = signal<boolean>(true);
 
@@ -89,14 +87,21 @@ export class ProfilePageComponent {
       const value = this.form.value;
 
       const updatedUserInfo: UserUpdateInterface = {
-        ...(value.name !== this.userInfo?.userName && value.name ? { userName: value.name } : {}),
-        ...(value.password ? { password: value.password } : {}),
-        ...(value.email !== this.userInfo?.email && value.email ? { email: value.email } : {}),
+        currentPassword: value.currentPassword,
+        ...(value.name !== this.userInfo?.userName && value.name ? {userName: value.name} : {}),
+        ...(value.newPassword ? {password: value.newPassword} : {}),
+        ...(value.email !== this.userInfo?.email && value.email ? {email: value.email} : {})
       };
-
       this.userService.updateUserInfo(updatedUserInfo);
-      this.auth.logout();
-    }else{
+      this.form.reset({
+        name: this.userInfo?.userName,
+        email: this.userInfo?.email,
+        currentPassword: null,
+        newPassword: null,
+        repeatNewPassword: null,
+      })
+
+    } else {
       getErrorsMessagesAfterValidation(this.form.errors, this.errorService)
     }
   }

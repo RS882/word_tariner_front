@@ -18,7 +18,13 @@
   @if (!isChangeDisabled()) {
     <app-form-field
       [form]="form"
-      controlName="password"
+      controlName="currentPassword"
+      labelText="Current password"
+    />
+
+    <app-form-field
+      [form]="form"
+      controlName="newPassword"
       labelText="New password"
       [infoText]="isChangeDisabled() ? undefined :'Password should include at least one letter' +
        ' (A-Z or a-z), one digit (0-9), one special character (@, #, $, %, ^, &, +, =, !),' +
@@ -27,7 +33,7 @@
 
     <app-form-field
       [form]="form"
-      controlName="repeatPassword"
+      controlName="repeatNewPassword"
       labelText="Re-enter new password"
     />
   }
