@@ -10,6 +10,7 @@ import {MessageService} from "../message/message.service";
 import {AuthService} from "../../../auth/auth.service";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
+import {LoadingService} from "../loading/loading.service";
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +33,9 @@ export class UserService {
   apiService = inject(ApiService);
   messageService = inject(MessageService);
   injector = inject(Injector);
-  cookie =inject(CookieService);
+  cookie = inject(CookieService);
   router = inject(Router);
+  load = inject(LoadingService);
 
   registration(payload: UserRegistrationInterface) {
     const request$ = this.http.post<UserInfoInterface>(
@@ -68,25 +70,40 @@ export class UserService {
     return this.apiService.handleRequest(
       request$,
       res => {
-        if (res.status === 205) {
+        if (res.status === 205 || res.status === 401) {
           const auth = this.injector.get(AuthService);
           auth.accessToken = '';
           auth.userId = null;
           auth.userRole = null;
           auth.setAuthStatus(false);
           this.cookie.deleteAll();
-          this.me=null;
-          this.messageService.show(`User updated successfully. You need to log in again`);
-          this.router.navigate(['login']);
-        }else if(res.status === 204){
+        } else if (res.status === 204) {
           this.getMe();
           this.messageService.show(`User updated successfully`);
-        }else{
+        } else {
           console.log('Status : ' + res.status);
         }
-
       }
-    ).subscribe();
+    ).subscribe(res => {
+      if (res.status === 205) {
+
+        const auth = this.injector.get(AuthService);
+
+        if (this.me !== null) {
+          auth.login({
+            email: payload.email || this.me.email,
+            password: payload.password || payload.currentPassword
+          }).subscribe({
+            next: () => {
+              this.router.navigate(['lexeme-load']);
+            }
+          })
+
+        } else {
+          this.router.navigate(['login'])
+        }
+      }
+    });
   }
 
   saveUserInfo(userInfo: UserInfoInterface) {
