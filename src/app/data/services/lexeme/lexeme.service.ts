@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {LexemeInterface} from "../../interfaces/lexeme.interface";
 import {apiConstants} from "../../../api/api.url";
 import {ApiService} from "../../../api/api.service";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, throwError} from "rxjs";
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -52,7 +52,9 @@ export class LexemeService {
       () => {
         this.router.navigate(['trainer']);
       }
-    ).subscribe();
+    ).subscribe({
+      error: (err) =>    throwError(err)
+    });
   }
 
   saveLexemes(lexemes: LexemeInterface) {

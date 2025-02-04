@@ -1,6 +1,6 @@
-export interface LexemeResultInterface{
+import {ResultsCountInterface} from "./resultsCount.interface";
+
+export interface LexemeResultInterface extends ResultsCountInterface  {
   lexemeId: string,
-  attempts: number,
-  successfulAttempts: number,
   isActive?: boolean
 }

@@ -1,8 +1,8 @@
 import {Language} from "./language.type";
 import {TranslationsInterface} from "./translations.interface";
+import {LanguageInterface} from "./language.interface";
 
-export interface LexemeInterface{
-  sourceLanguage: Language,
-  targetLanguage: Language,
+export interface LexemeInterface extends LanguageInterface{
+
   translations: TranslationsInterface[]
 }

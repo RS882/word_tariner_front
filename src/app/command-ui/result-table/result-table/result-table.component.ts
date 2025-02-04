@@ -10,5 +10,5 @@ import {ResultService} from "../../../data/services/result/result.service";
   styleUrl: './result-table.component.scss'
 })
 export class ResultTableComponent {
-  @Input() resultsCount: ResultsCountInterface={attemptsCount: 0, successfulAttemptsCount: 0};
+  @Input() resultsCount: ResultsCountInterface={attempts: 0, successfulAttempts: 0};
 }

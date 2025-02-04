@@ -4,6 +4,7 @@
     <div class="user-box_text user-name">{{ me()?.userName }}</div>
   </div>
   <button class="btn btn-shadow sidebar-btn" (click)="viesProfileClick()">View Profile</button>
+  <button class="btn btn-shadow sidebar-btn" (click)="viesResultsClick()">View results</button>
 }
 
 @if (isAuthenticated()) {

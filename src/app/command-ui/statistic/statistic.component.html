@@ -1,0 +1,24 @@
+<div class="languages languages-statistic">
+  {{ userStatistic?.sourceLanguage }}
+  <svg icon="arrow" class="arrow-icon arrow-icon-statistic"/>
+  {{ userStatistic?.targetLanguage }}
+</div>
+<div class="statistic-box">
+  <div class="statistic-data">
+    <h4> Total Learned Words :</h4>
+    <p>{{userStatistic?.countOfResult}}</p>
+  </div>
+
+  <div class="statistic-data">
+    <h4> Total Attempts :</h4>
+    <p>{{userStatistic?.attempts}}</p>
+  </div>
+
+  <div class="statistic-data">
+    <h4> Successful Attempts :</h4>
+    <p>{{ computeSuccessRate()}}</p>
+  </div>
+</div>
+
+<button class="btn btn-shadow sidebar-btn full-width" (click)="moreClick()">More...</button>
+

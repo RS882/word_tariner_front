@@ -1,0 +1,37 @@
+:host{
+  display: grid;
+  grid-template-columns: 20% 1fr ;
+  grid-template-rows: 1fr 45px;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  padding: 16px;
+  margin: 8px;
+  max-width: 500px;
+  gap:10px;
+}
+.languages-statistic{
+  color: var(--ligth-color);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.arrow-icon-statistic{
+  color: var(--ligth-color);
+}
+
+.statistic-data{
+  display: grid;
+  grid-template-columns: 202px 1fr;
+  gap: 5px;
+}
+
+.statistic-box{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}

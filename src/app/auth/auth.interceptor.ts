@@ -17,7 +17,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   }
   return next(addToken(req, token))
     .pipe(
-      catchError(er => er.status === 403 ?
+      catchError(er => er.status === 401 ?
         refreshTokens(authService, req, next) :
         throwError(er))
     );
@@ -30,6 +30,7 @@ const refreshTokens = (
 
   if (!isRefreshing) {
     isRefreshing = true;
+    console.log("Refreshing...");
     return authService.refresh()
       .pipe(
         switchMap(res => {

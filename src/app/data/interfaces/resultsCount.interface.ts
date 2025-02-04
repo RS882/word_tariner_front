@@ -1,4 +1,4 @@
 export interface ResultsCountInterface {
-  attemptsCount: number;
-  successfulAttemptsCount: number;
+  attempts: number;
+  successfulAttempts: number;
 }

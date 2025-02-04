@@ -1,10 +1,9 @@
 import {Role} from "./role.type";
 import {LexemeType} from "./lexemeType.type";
+import {LanguageInterface} from "./language.interface";
 
-export interface LexemeUploadInterface {
+export interface LexemeUploadInterface extends LanguageInterface{
   sourceMeaning: string,
   targetMeaning: string,
-  sourceLanguage: Role,
-  targetLanguage: Role,
   type?: LexemeType,
 }

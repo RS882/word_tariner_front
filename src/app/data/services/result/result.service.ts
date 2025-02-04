@@ -7,9 +7,11 @@ import {ApiService} from "../../../api/api.service";
 import {apiConstants} from "../../../api/api.url";
 import {LexemeInterface} from "../../interfaces/lexeme.interface";
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, map} from "rxjs";
 import {ResultsCountInterface} from "../../interfaces/resultsCount.interface";
 import {Language} from "../../interfaces/language.type";
+import {UserStatisticInterface} from "../../interfaces/userStatistic.interface";
+import {UserStatisticApiResponse} from "../../interfaces/userStatisticApiResponse.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +58,7 @@ export class ResultService {
   }
 
   private _resultsCount = new BehaviorSubject<ResultsCountInterface>(
-    {attemptsCount: 0, successfulAttemptsCount: 0});
+    {attempts: 0, successfulAttempts: 0});
   resultCountStatus = this._resultsCount.asObservable();
 
   set resultsCount(value: ResultsCountInterface) {
@@ -95,8 +97,8 @@ export class ResultService {
   setCountOfResults(isCorrect: boolean): void {
     const result = this.resultsCount;
     this.resultsCount = {
-      attemptsCount: result.attemptsCount + 1,
-      successfulAttemptsCount: result.successfulAttemptsCount + (isCorrect ? 1 : 0)
+      attempts: result.attempts + 1,
+      successfulAttempts: result.successfulAttempts + (isCorrect ? 1 : 0)
     };
   }
 
@@ -119,7 +121,29 @@ export class ResultService {
 
   clearResult() {
     this.result.resultDtos = [];
-    this.resultsCount = {attemptsCount: 0, successfulAttemptsCount: 0};
+    this.resultsCount = {attempts: 0, successfulAttempts: 0};
     console.log("Clearing result");
+  }
+
+  loadUserStatistics() {
+    const request$ = this.http.get<UserStatisticApiResponse[]>(
+      apiConstants.userResult,
+      {withCredentials: true}
+    ).pipe(
+      map((response): UserStatisticInterface[] =>
+        response.map(r=>({
+            sourceLanguage: r.sourceLanguage,
+            targetLanguage: r.targetLanguage,
+            countOfResult: r.countOfResult,
+            attempts: r.countOfAttempts,
+            successfulAttempts: r.countOfSuccessfulAttempts,
+          })
+        )
+    ));
+   return  this.api.handleRequest(
+      request$,
+      res => {
+
+      })
   }
 }

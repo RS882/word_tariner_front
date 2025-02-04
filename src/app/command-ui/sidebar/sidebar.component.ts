@@ -33,7 +33,7 @@ export class SidebarComponent {
   result = inject(ResultService);
   user = inject(UserService);
 
-  count: ResultsCountInterface = {attemptsCount: 0, successfulAttemptsCount: 0};
+  count: ResultsCountInterface = {attempts: 0, successfulAttempts: 0};
 
   me = signal<UserInfoInterface | null>(null);
 
@@ -66,6 +66,10 @@ export class SidebarComponent {
 
   viesProfileClick() {
     this.router.navigate(['/profile']);
+  }
+
+  viesResultsClick(){
+    this.router.navigate(['/result']);
   }
 
   protected readonly Role = Role;

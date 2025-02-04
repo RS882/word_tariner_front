@@ -12,6 +12,7 @@ import {
 } from "./page/admin-page/upload-lexemes-file-page/upload-lexemes-file-page.component";
 import {ProfilePageComponent} from "./page/profile-page/profile-page.component";
 import {FormBoxComponent} from "./command-ui/form-box/form-box.component";
+import {ResultPageComponent} from "./page/result-page/result-page.component";
 
 export const routes: Routes = [
   {
@@ -35,6 +36,11 @@ export const routes: Routes = [
       {
         path: 'profile',
         component: ProfilePageComponent,
+        canActivate: [canActivateAuth]
+      },
+      {
+        path: 'result',
+        component: ResultPageComponent,
         canActivate: [canActivateAuth]
       },
       {

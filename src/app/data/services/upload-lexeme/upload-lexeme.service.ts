@@ -5,7 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {ApiService} from "../../../api/api.service";
 import {ResponseMessageInterface} from "../../interfaces/responseMessage.interface";
 import {MessageService} from "../message/message.service";
-import {Observable} from "rxjs";
+import {Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,10 @@ export class UploadLexemeService {
       res => {
         this.messageService.show(res.message)
       }
-    ).subscribe();
+    ).subscribe({
+      error: (err) =>    throwError(err)
+      }
+    );
   }
 
   uploadFile(payload: FormData) {
