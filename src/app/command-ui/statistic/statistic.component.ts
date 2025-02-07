@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {UserStatisticInterface} from "../../data/interfaces/userStatistic.interface";
 import {SvgIconComponent} from "../svg-icon/svg-icon.component";
+import {ResultService} from "../../data/services/result/result.service";
 
 @Component({
   selector: 'app-statistic',
@@ -14,6 +15,8 @@ import {SvgIconComponent} from "../svg-icon/svg-icon.component";
 export class StatisticComponent {
   @Input() userStatistic: UserStatisticInterface | null = null;
 
+  resultService = inject(ResultService);
+
   computeSuccessRate(): string {
     const { attempts, successfulAttempts= 0 } = this.userStatistic || {};
 
@@ -23,6 +26,12 @@ export class StatisticComponent {
   }
 
   moreClick() {
-console.log('Languages : ', this.userStatistic?.sourceLanguage, this.userStatistic?.targetLanguage);
+    if(this.userStatistic) {
+      this.resultService.loadUserResults(
+        this.userStatistic.sourceLanguage,
+        this.userStatistic.targetLanguage,
+        0, 10, "attempts", true
+      )
+    }
   }
 }

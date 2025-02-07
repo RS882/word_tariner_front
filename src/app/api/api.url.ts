@@ -1,3 +1,5 @@
+import {Language} from "../data/interfaces/language.type";
+
 const BASE_API_URL: string = 'http://localhost:8095/api/';
 const VERSION_PREFIX: string = 'v1/';
 const AUTH_PREFIX: string = 'auth/';
@@ -23,6 +25,13 @@ export const apiConstants = {
   userRegistration: getUserUrl('registration'),
   userMe: getUserUrl('me'),
   userResult: getUserUrl('lexeme-results'),
+  userTranslationsResultsUrl :  (sourceLanguage: Language,
+                                         targetLanguage: Language,
+                                         page: number,
+                                         size: number,
+                                         sortBy: string,
+                                         isAsc: boolean): string =>
+    `${getUserUrl('lexeme-results/translations')}?sourceLanguage=${sourceLanguage}&targetLanguage=${targetLanguage}&page=${page}&size=${size}&sortBy=${sortBy}&isAsc=${isAsc}`,
 
   lexeme: getFullUrl('lexemes'),
   lexemeFile: getLexemeUrl('files'),

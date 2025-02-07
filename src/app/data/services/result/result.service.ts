@@ -12,6 +12,9 @@ import {ResultsCountInterface} from "../../interfaces/resultsCount.interface";
 import {Language} from "../../interfaces/language.type";
 import {UserStatisticInterface} from "../../interfaces/userStatistic.interface";
 import {UserStatisticApiResponse} from "../../interfaces/userStatisticApiResponse.interface";
+import {
+  PageResponseUserResultsTranslationDtoInterface
+} from "../../interfaces/pageResponseUserResultsTranslationDto.Interface";
 
 @Injectable({
   providedIn: 'root'
@@ -131,7 +134,7 @@ export class ResultService {
       {withCredentials: true}
     ).pipe(
       map((response): UserStatisticInterface[] =>
-        response.map(r=>({
+        response.map(r => ({
             sourceLanguage: r.sourceLanguage,
             targetLanguage: r.targetLanguage,
             countOfResult: r.countOfResult,
@@ -139,11 +142,28 @@ export class ResultService {
             successfulAttempts: r.countOfSuccessfulAttempts,
           })
         )
-    ));
-   return  this.api.handleRequest(
+      ));
+    return this.api.handleRequest(
       request$,
       res => {
 
       })
+  }
+
+  loadUserResults(sourceLanguage: Language,
+                  targetLanguage: Language,
+                  page: number,
+                  size: number,
+                  sortBy: string,
+                  isAsc: boolean) {
+    const request$ = this.http.get<PageResponseUserResultsTranslationDtoInterface>(
+      apiConstants.userTranslationsResultsUrl(sourceLanguage, targetLanguage, page, size, sortBy, isAsc),
+      {withCredentials: true}
+    )
+    return this.api.handleRequest(
+      request$,
+      res => {
+        console.log(res);
+      }).subscribe();
   }
 }
