@@ -4,6 +4,7 @@ import {Router, UrlTree} from "@angular/router";
 import {LexemeService} from "../data/services/lexeme/lexeme.service";
 import {UserService} from "../data/services/user/user.service";
 import {Role} from "../data/interfaces/role.type";
+import {ResultService} from "../data/services/result/result.service";
 
 export const canActivateAuth = (): boolean | UrlTree => {
   const authService = inject(AuthService);
@@ -22,6 +23,12 @@ export const canLexemesLoaded = (): boolean | UrlTree => {
   const isLoaded: boolean = inject(LexemeService).isLexemesLoaded;
   const router = inject(Router);
   return isLoaded || router.createUrlTree(['/lexeme-load'])
+}
+
+export const canTranslationsResultLoaded = (): boolean | UrlTree => {
+  const result = inject(ResultService).translationsResults;
+  const router = inject(Router);
+  return !!result || router.createUrlTree(['/translations-result'])
 }
 
 export const canAdminRole = (): boolean | UrlTree => {

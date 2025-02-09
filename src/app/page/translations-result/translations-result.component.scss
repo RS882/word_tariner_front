@@ -1,0 +1,14 @@
+:host{
+  display: block;
+  margin: 50px;
+}
+
+.translation-title{
+  display: grid;
+  grid-template-columns: repeat(4,  1fr);
+  max-width: 500px;
+  margin-bottom: 16px;
+  font-weight: bold;
+  color: var(--primary-color);
+  justify-items: center;
+}

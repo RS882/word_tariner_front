@@ -1,0 +1,37 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--ligth-color);
+  height: 24px;
+  width: 24px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.btn-pagination {
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+
+.current-page {
+  font-size: 24px;
+  height: 32px;
+  width: 32px;
+  color: var(--primary-color);
+  border-radius: 50%;
+  border: 1px solid var(--primary-color);
+}

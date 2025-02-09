@@ -2,7 +2,7 @@ import {Routes} from '@angular/router';
 import {LoginPageComponent} from "./page/login-page/login-page.component";
 import {RegistrationPageComponent} from "./page/registration-page/registration-page.component";
 import {LayoutComponent} from "./command-ui/layout/layout.component";
-import {canActivateAuth, canAdminRole, canLexemesLoaded} from "./auth/access.guard";
+import {canActivateAuth, canAdminRole, canLexemesLoaded, canTranslationsResultLoaded} from "./auth/access.guard";
 import {FormLayoutComponent} from "./command-ui/form-layout/form-layout.component";
 import {LemexeLoadPageComponent} from "./page/lemexe-load-page/lemexe-load-page.component";
 import {TrainerPageComponent} from "./page/trainer-page/trainer-page.component";
@@ -13,6 +13,7 @@ import {
 import {ProfilePageComponent} from "./page/profile-page/profile-page.component";
 import {FormBoxComponent} from "./command-ui/form-box/form-box.component";
 import {ResultPageComponent} from "./page/result-page/result-page.component";
+import {TranslationsResultComponent} from "./page/translations-result/translations-result.component";
 
 export const routes: Routes = [
   {
@@ -42,6 +43,11 @@ export const routes: Routes = [
         path: 'result',
         component: ResultPageComponent,
         canActivate: [canActivateAuth]
+      },
+      {
+        path: 'translations-result',
+        component: TranslationsResultComponent,
+        canActivate: [canActivateAuth, canTranslationsResultLoaded]
       },
       {
         path: 'trainer',

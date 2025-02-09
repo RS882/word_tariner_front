@@ -10,7 +10,7 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #FFFFFFBF;
+  color: var(--ligth-color);
   cursor: pointer;
   height: 24px;
   transition: background-color 0.3s ease, color 0.3s ease;

@@ -72,6 +72,40 @@ export class ResultService {
     return this._resultsCount.value;
   }
 
+  private _translationsResults = new BehaviorSubject<PageResponseUserResultsTranslationDtoInterface | null>(null);
+
+  translationsResultsStatus = this._translationsResults.asObservable();
+
+  get translationsResults(): PageResponseUserResultsTranslationDtoInterface | null {
+    return this._translationsResults.value;
+  }
+
+  set translationsResults(value: PageResponseUserResultsTranslationDtoInterface) {
+    this._translationsResults.next(value);
+  }
+
+  private _translationsSourceLanguage = new BehaviorSubject<Language | null>(null);
+  translationsSourceLanguageStatus = this._translationsSourceLanguage.asObservable();
+
+  get translationsSourceLanguage(): Language | null {
+    return this._translationsSourceLanguage.value;
+  }
+
+  set translationsSourceLanguage(value: Language | null) {
+    this._translationsSourceLanguage.next(value);
+  }
+
+  private _translationsTargetLanguage = new BehaviorSubject<Language | null>(null);
+  translationsTargetLanguageStatus = this._translationsTargetLanguage.asObservable();
+
+  get translationsTargetLanguage(): Language | null {
+    return this._translationsTargetLanguage.value;
+  }
+
+  set translationsTargetLanguage(value: Language | null) {
+    this._translationsTargetLanguage.next(value);
+  }
+
   addResult(lexemeId: string, isCorrect: boolean, isHide: boolean): void {
     if (this.result.sourceLanguage === Language.EN && this.result.targetLanguage === Language.EN) {
       this.errorService.show(['Selected languages match']);
@@ -153,9 +187,9 @@ export class ResultService {
   loadUserResults(sourceLanguage: Language,
                   targetLanguage: Language,
                   page: number,
-                  size: number,
-                  sortBy: string,
-                  isAsc: boolean) {
+                  size: number = 10,
+                  sortBy: string = "attempts",
+                  isAsc: boolean = true) {
     const request$ = this.http.get<PageResponseUserResultsTranslationDtoInterface>(
       apiConstants.userTranslationsResultsUrl(sourceLanguage, targetLanguage, page, size, sortBy, isAsc),
       {withCredentials: true}
@@ -163,7 +197,7 @@ export class ResultService {
     return this.api.handleRequest(
       request$,
       res => {
-        console.log(res);
-      }).subscribe();
+        this.translationsResults = res;
+      });
   }
 }

@@ -1,0 +1,15 @@
+@let contents = translationsResults?.content;
+
+<div class="translation-title">
+  <div>Meaning</div>
+  <div>Attempts</div>
+  <div>Success</div>
+  <div>Learn again?</div>
+</div>
+
+@for(content of contents; track getUUID()){
+<app-translation [content]="content" [sourceLanguage]="sourceLanguage"/>
+}
+
+<app-pagination [pagination]="getPaginationData()" (nextPageNumberEvent)="receiveNextPage($event)"/>
+

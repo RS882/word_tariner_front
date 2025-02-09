@@ -1,0 +1,47 @@
+@if (pagination) {
+
+  @let first = pagination.first;
+  @let last = pagination.last;
+
+  @if (!(first && last)) {
+
+    @let pageNumber = pagination.pageNumber;
+    @let totalPage = pagination.totalPages;
+
+    @if (!first && pageNumber > 0) {
+      <button class="pagination btn-pagination" (click)="sendNextPageNumber(pageNumber-1)"> <</button>
+
+      @for (startNum of getStartPrevPages(); track getUUID()) {
+        <button class="pagination btn-pagination" (click)="sendNextPageNumber(startNum-1)"> {{ startNum }}</button>
+      }
+
+      @if (pageNumber > 4) {
+        <div class="pagination ">...</div>
+      }
+
+      @for (endNum of getEndPrevPages(); track getUUID()) {
+        <button class="pagination btn-pagination" (click)="sendNextPageNumber(endNum-1)"> {{ endNum }}</button>
+
+      }
+    }
+
+    <div class="pagination current-page">{{ pageNumber + 1 }}</div>
+
+
+    @if (!last && pageNumber < totalPage - 1) {
+
+      @for (startNum of getEndNextPages(); track getUUID()) {
+        <button class="pagination btn-pagination" (click)="sendNextPageNumber(startNum-1)"> {{ startNum }}</button>
+      }
+
+      @if (pageNumber < totalPage - 5) {
+        <div class="pagination ">...</div>
+      }
+
+      @for (endNum of getStartNextPages(); track getUUID()) {
+        <button class="pagination btn-pagination" (click)="sendNextPageNumber(endNum-1)"> {{ endNum }}</button>
+      }
+      <button class="pagination btn-pagination" (click)="sendNextPageNumber(pageNumber+1)"> ></button>
+    }
+  }
+}
