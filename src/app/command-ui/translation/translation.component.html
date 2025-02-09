@@ -1,10 +1,12 @@
 <div>
-  {{wordMeaning}}
+  {{ wordMeaning }}
 </div>
 <div>
-  {{content?.attempts}}
+  {{ content?.attempts }}
 </div>
 <div>
-  {{computeSuccessRate()}}
+  {{ computeSuccessRate() }}
 </div>
-<input type="checkbox" [checked]="content?.isActive">
+<input type="checkbox"
+       [checked]="checkboxValue?.isActive"
+       (change)="onCheckboxChange($event)">

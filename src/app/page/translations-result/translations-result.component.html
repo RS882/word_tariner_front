@@ -7,9 +7,21 @@
   <div>Learn again?</div>
 </div>
 
-@for(content of contents; track getUUID()){
-<app-translation [content]="content" [sourceLanguage]="sourceLanguage"/>
-}
+<form
+  action="" class="form form-flex"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  @for (content of contents; track getUUID()) {
+    <app-translation
+      [content]="content"
+      [sourceLanguage]="sourceLanguage"
+      (checkboxChange)="receiveChangeIsActive($event)"/>
+  }
+  <button class="btn btn-shadow" type="submit">Save changes</button>
+</form>
 
-<app-pagination [pagination]="getPaginationData()" (nextPageNumberEvent)="receiveNextPage($event)"/>
+<app-pagination
+  [pagination]="getPaginationData()"
+  (nextPageNumberEvent)="receiveNextPage($event)"/>
 
